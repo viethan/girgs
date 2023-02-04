@@ -12,11 +12,12 @@ def roundUpCellVol(x, d):
 # we use backtracking to solve it
 def getGeometricOrdering(comb, l, d, ans):
 	if len(comb) is d:
-		# temp = []
-		#for x_i in comb:
-		#	temp.append([x_i * 2 ** (-l), (x_i+1) * 2 ** (-l)])
-
-		ans.append([l] + comb[:])
+		temp = []
+		for x_i in comb:
+			temp.append([x_i * 2 ** (-l), (x_i+1) * 2 ** (-l)])
+		ans.append([l, temp])	
+	
+		# ans.append([l, comb[:]])
 		return
 	
 	for i in range(2**l):
@@ -31,11 +32,19 @@ for cell in ordering:
 	print(cell)
 print(len(ordering))
 
-
-
-# determine geometric ordering of the cells of volume mu
-
 # iterate through the points in P
+
+l = 1
+d = 2
+P = [[0.7, 0.2]]
+
+for point in P:
+	cell = []
+	for i in range(d):
+		cell.append(math.floor(point[i] / (2 ** (-l))))
+
+	print(cell)	
+
 
 # determine the cell the point belongs to
 
