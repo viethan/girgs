@@ -7,26 +7,39 @@ def roundUpCellVol(x, d):
 	l = math.floor(math.log(x, 2**d))
 	return l, 2 ** ((-1) * l * d)
 
-# obtaining the geometric ordering for a given level
-# is the exact same one of ordered combinations of d numbers chosen from the range [0,2**l)
-# we use backtracking to solve it
-def getGeometricOrdering(comb, l, d, ans):
-	if len(comb) is d:
-		temp = []
-		for x_i in comb:
-			temp.append([x_i * 2 ** (-l), (x_i+1) * 2 ** (-l)])
-		ans.append([l, temp])	
-	
-		# ans.append([l, comb[:]])
+
+def getMiniCubes(comb, node, i, minicubes):
+	if i is len(node):
+		minicubes.append(comb[:])
 		return
-	
-	for i in range(2**l):
-		comb.append(i)
-		getGeometricOrdering(comb, l, d, ans)
-		comb.pop()
+
+	left, right = node[i]
+	mid = left + (right - left) / 2
+
+	comb.append([left, mid])
+	getMiniCubes(comb, node, i+1, minicubes)
+	comb.pop()
+
+	comb.append([mid, right])
+	getMiniCubes(comb, node, i+1, minicubes)
+	comb.pop()
+
+def getGeometricOrdering(node, l, d, ans):
+	if l == 0:
+		ans.append(node[:])
+		return
+
+	minicubes = []
+	getMiniCubes([], node, 0, minicubes)
+	for minicube in minicubes:
+		getGeometricOrdering(minicube, l-1, d, ans)
+
+
+#			temp.append([x_i * 2 ** (-l), (x_i+1) * 2 ** (-l)])
+
 
 ordering = []
-getGeometricOrdering([], 1, 2, ordering)
+getGeometricOrdering([[0,1], [0,1]], 2, 2, ordering)
 
 for cell in ordering:
 	print(cell)
@@ -34,6 +47,7 @@ print(len(ordering))
 
 # iterate through the points in P
 
+'''
 l = 1
 d = 2
 P = [[0.7, 0.2]]
@@ -46,8 +60,19 @@ for point in P:
 	print(cell)	
 
 
-# determine the cell the point belongs to
+# determine first and last point in C intersect P
 
-# increment count if point really belongs in that cell
+# have a pointer from P points to indices in the contiguous subsequence
 
+# array A with the pointers has to also be ordered somehow
 
+'''
+
+'''
+- fix geometric ordering
+- think of geometric ordering as a long rectangle
+- C is a subset of that
+- so are the Ps
+- we can find in O(1) time !! using min max
+
+'''
