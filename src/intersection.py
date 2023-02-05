@@ -38,36 +38,38 @@ def getCells(l, d):
 	ordering = []
 	getGeometricOrdering([[0, 1] for _ in range(d)], l, d, ordering)
 
-	cells = []
-	for cube in ordering:
-		print(cube)
+	cells = {}
+	for i, cube in enumerate(ordering):
+		# print(cube)
 		cell = []
 		for interval in cube:
 			cell.append(interval[0] / (2 ** (-l))) 
+		
+		print(cube, i)
+		cells[tuple(cell)] = i
 
-		cells.append([l, cell])
-		print(cells[-1], "\n")
-
-	print(len(ordering))
-
-
-getCells(1, 3)
+	# print(len(ordering))
+	return cells
 
 
+l, d = 2, 2
+
+
+cells = getCells(l, d)
+# print(cells)
 
 # iterate through the points in P
 
-'''
-l = 1
-d = 2
-P = [[0.7, 0.2]]
-
+P = [[0.275, 0.768]]
+A = []
 for point in P:
 	cell = []
 	for i in range(d):
 		cell.append(math.floor(point[i] / (2 ** (-l))))
 
-	print(cell)	
+	A.append([cells[tuple(cell)], point])	
+
+print(A)
 
 
 # determine first and last point in C intersect P
@@ -76,7 +78,6 @@ for point in P:
 
 # array A with the pointers has to also be ordered somehow
 
-'''
 
 '''
 - fix geometric ordering
