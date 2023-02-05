@@ -45,22 +45,49 @@ def getCells(l, d):
 		for interval in cube:
 			cell.append(interval[0] / (2 ** (-l))) 
 		
-		print(cube, i)
+		print(cell, i)
 		cells[tuple(cell)] = i
 
 	# print(len(ordering))
 	return cells
 
 
+def getCountIntersection(C, A, cells, l, d):
+	old_l = C[0]
+
+	# find indices in cells of lowest and highest of C
+	lowest, highest = [], []
+	for i in range(d):
+		lowest.append((C[1][i] * 2**(-old_l)) / (2**(-l)))
+		highest.append(((C[1][i] + 1) * 2**(-old_l)) / (2**(-l)) - 1)
+
+	print(lowest, highest)
+	left = cells[tuple(lowest)]
+	right = cells[tuple(highest)]
+
+	# determine first and last point in C intersect P
+	s_c, e_c = -1, -1
+	for i, point in enumerate(A):
+		cell_idx, p = point
+		if cell_idx >= left:
+			s_c = i
+			break
+
+	for i, point in reversed(list(enumerate(A))):
+		cell_idx, p = point
+		if cell_idx <= right:
+			e_c = i
+			break
+
+	if s_c != -1:
+		return e_c - s_c + 1
+	else:
+		return 0
+
+
 l, d = 2, 2
-
-
 cells = getCells(l, d)
-# print(cells)
-
-# iterate through the points in P
-
-P = [[0.275, 0.768]]
+P = [[0, 0], [0.2, 0.56], [0.3, 0.8], [0.6, 0.7], [0.7, 0.7], [0.8, 0.8]]
 A = []
 for point in P:
 	cell = []
@@ -69,21 +96,7 @@ for point in P:
 
 	A.append([cells[tuple(cell)], point])	
 
-print(A)
+A.sort()
 
+print(getCountIntersection([1, [1, 1]], A, cells, l, d))
 
-# determine first and last point in C intersect P
-
-# have a pointer from P points to indices in the contiguous subsequence
-
-# array A with the pointers has to also be ordered somehow
-
-
-'''
-- fix geometric ordering
-- think of geometric ordering as a long rectangle
-- C is a subset of that
-- so are the Ps
-- we can find in O(1) time !! using min max
-
-'''
