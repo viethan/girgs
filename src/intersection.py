@@ -34,16 +34,26 @@ def getGeometricOrdering(node, l, d, ans):
 	for minicube in minicubes:
 		getGeometricOrdering(minicube, l-1, d, ans)
 
+def getCells(l, d):
+	ordering = []
+	getGeometricOrdering([[0, 1] for _ in range(d)], l, d, ordering)
 
-#			temp.append([x_i * 2 ** (-l), (x_i+1) * 2 ** (-l)])
+	cells = []
+	for cube in ordering:
+		print(cube)
+		cell = []
+		for interval in cube:
+			cell.append(interval[0] / (2 ** (-l))) 
+
+		cells.append([l, cell])
+		print(cells[-1], "\n")
+
+	print(len(ordering))
 
 
-ordering = []
-getGeometricOrdering([[0,1], [0,1]], 2, 2, ordering)
+getCells(1, 3)
 
-for cell in ordering:
-	print(cell)
-print(len(ordering))
+
 
 # iterate through the points in P
 
