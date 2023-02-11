@@ -60,12 +60,12 @@ def getNeighbours(c, l, d, i, comb, neighbours):
 	getNeighbours(c, l, d, i+1, comb, neighbours)
 	comb.pop()
 
-	increasing = c[i] + 1 if c[i] + 1 < 2**(l) else 0
+	increasing = c[i] + 1 if c[i] + 1 < 2**(l) else 0.0
 	comb.append(increasing)
 	getNeighbours(c, l, d, i+1, comb, neighbours)
 	comb.pop()
 
-	decreasing = c[i] - 1 if c[i] - 1 >= 0 else 2**(l) - 1
+	decreasing = c[i] - 1 if c[i] - 1 >= 0.0 else 2**(l) - 1
 	comb.append(decreasing)
 	getNeighbours(c, l, d, i+1, comb, neighbours)
 	comb.pop()
