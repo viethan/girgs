@@ -7,6 +7,17 @@ def roundUpCellVol(x, d):
 	l = math.floor(math.log(x, 2**d))
 	return l, 2 ** ((-1) * l * d)
 
+def cell2intervals(node, l):
+	intervals = []
+	for c in node:
+		intervals.append([c * (2 ** (-l)), (c+1) * (2 ** (-l))])
+	return intervals
+
+def intervals2cell(node, l):
+	cell = []
+	for interval in node:
+		cell.append(interval[0] / (2 ** (-l))) 
+	return cell
 
 def getMiniCubes(comb, node, i, minicubes):
 	if i is len(node):
@@ -41,15 +52,28 @@ def getCells(l, d):
 	cells = {}
 	for i, cube in enumerate(ordering):
 		# print(cube)
-		cell = []
-		for interval in cube:
-			cell.append(interval[0] / (2 ** (-l))) 
-		
+		cell = intervals2cell(cube, l) 
+
 		print(cell, i)
 		cells[tuple(cell)] = i
 
 	print(len(ordering))
 	return cells
+
+def getChildren(node, l, d):
+	node = cell2intervals(node, l)
+	#print("yo")
+	children_intervals, children_cells = [], []
+	getMiniCubes([], node, 0, children_intervals)
+	#print(node)
+	for child in children_intervals:
+		children_cells.append(intervals2cell(child, l+1))
+		#print(child, children_cells[-1])
+
+	#print()
+	return children_cells
+
+
 
 def getNeighbours(c, l, d, i, comb, neighbours):
 	if i == len(c):

@@ -3,7 +3,7 @@ import helper
 
 def partition(x, d):
 	l, vol = helper.roundUpCellVol(x, d)
-
+	print("level:", l)
 	P = set() 
 	for level in range(l, 0, -1):
 		cells = helper.getCells(level, d)
@@ -15,10 +15,23 @@ def partition(x, d):
 			# type I.
 			if level == l:
 				for neighbour in neighbours:
-					if (level, tuple(c), tuple(neighbour)) not in P and (level, tuple(neighbour), tuple(c)) not in P:
-						P.add((level, tuple(c), tuple(neighbour)))
+					par = (level, tuple(sorted([tuple(c), tuple(neighbour)])))
+					P.add(tuple(par))
+
+					#if (level, tuple(c), tuple(neighbour)) not in P and (level, tuple(neighbour), tuple(c)) not in P:
+					#	P.add((level, tuple(c), tuple(neighbour))) # maybe replace with sorting?
 
 			# type II.
+			else:
+				# make sure to not make identical!!!!!!!!!!!!!!!!!!!
+				c_children = helper.getChildren(c, level, d)
+				for neighbour in neighbours:
+					n_children = helper.getChildren(neighbour, level, d)
+
+					for c1 in c_children:
+						for c2 in n_children:
+							par = (level+1, tuple(sorted([tuple(c1), tuple(c2)])))
+							P.add(tuple(par))
 
 
 			# backtracking to get all neighbours
@@ -27,31 +40,10 @@ def partition(x, d):
 	return P
 
 
-P = partition(0.0625, 2)
-count = 0
-for level, c1, c2 in P:
-	if c1 == (3.0, 3.0):
-		count += 1
-		print((c1, c2))
-	elif c2 == (3.0, 3.0):
-		count += 1
-		print((c2, c1))
+P = partition(0.015625, 2)
+count = [0, 0, 0, 0]
+for level, pair in P:
+	count[level] += 1
 
-print(count)
+print(count[3], count[2], count[1], count[0])
 print(len(P))
-print(P)
-
-# I.
-
-# enumerate all blocks of that size
-
-# for each of them, get their neighbours (make sure to wrap around if needed)
-
-# add them to the set P
-
-
-# II.
-
-# start bottom up
-
-
