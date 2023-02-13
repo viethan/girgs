@@ -1,49 +1,42 @@
 import math
 import helper
 
-def partition(x, d):
-	l, vol = helper.roundUpCellVol(x, d)
-	print("level:", l)
-	P = set() 
-	for level in range(l, 0, -1):
-		cells = helper.getCells(level, d)
+class Partitioning:
+	def __init__(self, v, d):
+		self.d = d
+		self.l, self.mu = helper.roundUpCellVol(v, d)
+		print("level:", self.l)
 
-		for c in cells.keys():
-			neighbours = []
-			helper.getNeighbours(c, level, d, 0, [], neighbours)
+		self.P = set() 
+		for level in range(self.l, 0, -1):
+			cells = helper.getCells(level, self.d)
 
-			# type I.
-			if level == l:
-				for neighbour in neighbours:
-					par = (level, tuple(sorted([tuple(c), tuple(neighbour)])))
-					P.add(tuple(par))
+			for c in cells.keys():
+				neighbours = []
+				helper.getNeighbours(c, level, self.d, 0, [], neighbours)
 
-					#if (level, tuple(c), tuple(neighbour)) not in P and (level, tuple(neighbour), tuple(c)) not in P:
-					#	P.add((level, tuple(c), tuple(neighbour))) # maybe replace with sorting?
+				# type I.
+				if level == self.l:
+					for neighbour in neighbours:
+						par = (level, tuple(sorted([tuple(c), tuple(neighbour)])))
+						self.P.add(tuple(par))
 
-			# type II.
-			else:
-				# make sure to not make identical!!!!!!!!!!!!!!!!!!!
-				c_children = helper.getChildren(c, level, d)
-				for neighbour in neighbours:
-					n_children = helper.getChildren(neighbour, level, d)
+				# type II.
+				else:
+					c_children = helper.getChildren(c, level, self.d)
+					for neighbour in neighbours:
+						n_children = helper.getChildren(neighbour, level, self.d)
 
-					for c1 in c_children:
-						for c2 in n_children:
-							par = (level+1, tuple(sorted([tuple(c1), tuple(c2)])))
-							P.add(tuple(par))
-
-
-			# backtracking to get all neighbours
-			# MAKE SURE TO NOT HAVE DUPLICATES !!!!!!!! try both (x1, x2) and (x2, x1) in set? or modified backtracking
-
-	return P
+						for c1 in c_children:
+							for c2 in n_children:
+								par = (level+1, tuple(sorted([tuple(c1), tuple(c2)])))
+								self.P.add(tuple(par))
 
 
-P = partition(0.015625, 2)
-count = [0, 0, 0, 0]
-for level, pair in P:
-	count[level] += 1
+# ds = Partitioning(0.015625, 2)
+# count = [0, 0, 0, 0]
+# for level, pair in ds.P:
+# 	count[level] += 1
 
-print(count[3], count[2], count[1], count[0])
-print(len(P))
+# print(count[3], count[2], count[1], count[0])
+# print(len(ds.P))
