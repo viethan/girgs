@@ -1,50 +1,79 @@
 import math
 import helper
 
-def getCountIntersection(C, A, cells, l, d):
-	old_l = C[0]
+class CellPointsIntersection:
+	def __init__(self, v, P, d):
+		self.d = d
+		self.l, self.mu = helper.roundUpCellVol(v, d)
+		self.cells = helper.getCells(self.l, d)
 
-	# find indices in cells of lowest and highest of C
-	lowest, highest = [], []
-	for i in range(d):
-		lowest.append((C[1][i] * 2**(-old_l)) / (2**(-l)))
-		highest.append(((C[1][i] + 1) * 2**(-old_l)) / (2**(-l)) - 1)
+		self.A = []
+		for point in P:
+			cell = []
+			for i in range(d):
+				cell.append(math.floor(point[i] / (2 ** (-self.l))))
 
-	print(lowest, highest)
-	left = cells[tuple(lowest)]
-	right = cells[tuple(highest)]
-
-	# determine first and last point in C intersect P
-	s_c, e_c = -1, -1
-	for i, point in enumerate(A):
-		cell_idx, p = point
-		if cell_idx >= left:
-			s_c = i
-			break
-
-	for i, point in reversed(list(enumerate(A))):
-		cell_idx, p = point
-		if cell_idx <= right:
-			e_c = i
-			break
-
-	if s_c != -1:
-		return e_c - s_c + 1
-	else:
-		return 0
+			self.A.append([self.cells[tuple(cell)], point])	
+		self.A.sort()
 
 
-l, d = 2, 2
-cells = helper.getCells(l, d)
-P = [[0, 0], [0.2, 0.56], [0.3, 0.8], [0.6, 0.7], [0.7, 0.7], [0.8, 0.8]]
-A = []
-for point in P:
-	cell = []
-	for i in range(d):
-		cell.append(math.floor(point[i] / (2 ** (-l))))
+	def __intersection(self, C):
+		old_l = C[0]
 
-	A.append([cells[tuple(cell)], point])	
+		# find indices in cells of lowest and highest of C
+		lowest, highest = [], []
+		for i in range(self.d):
+			lowest.append((C[1][i] * 2**(-old_l)) / (2**(-self.l)))
+			highest.append(((C[1][i] + 1) * 2**(-old_l)) / (2**(-self.l)) - 1)
 
-A.sort()
+		left = self.cells[tuple(lowest)]
+		right = self.cells[tuple(highest)]
 
-print(getCountIntersection([2, [2, 2]], A, cells, l, d)) #[0.5..1] x [0.5..1]
+		# determine first and last point in C intersect P
+		s_c, e_c = -1, -1
+		for i, point in enumerate(self.A):
+			cell_idx, p = point
+			if cell_idx >= left:
+				s_c = i
+				break
+
+		for i, point in reversed(list(enumerate(self.A))):
+			cell_idx, p = point
+			if cell_idx <= right:
+				e_c = i
+				break
+
+		return s_c, e_c
+
+
+	def getCount(self, C):
+		s_c, e_c = self.__intersection(C)
+
+		if s_c != -1:
+			return e_c - s_c + 1
+		else:
+			return 0
+
+	
+	def getIntersection(self, C):
+		s_c, e_c = self.__intersection(C)
+
+		if s_c != -1:
+			return [point for i, point in self.A[s_c:e_c+1]]
+		else:
+			return []
+
+
+	def getKthPoint(self, C, k):
+		s_c, e_c = self.__intersection(C)
+
+		if s_c != -1 and s_c + k <= e_c:
+			return self.A[s_c + k][1]
+		else:
+			return None
+
+
+
+# P = [[0, 0], [0.2, 0.56], [0.3, 0.8], [0.6, 0.7], [0.7, 0.7], [0.8, 0.8]]
+# ds = CellPointsIntersection(0.0625, P, 2)
+# print(ds.getIntersection([2, [2, 2]]))
