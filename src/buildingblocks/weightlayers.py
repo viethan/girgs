@@ -15,6 +15,17 @@ def getWeightLayers(weightMapping):
 
 	return weightLayers
 
+
+def getCellWeightLayers(dv, cell):
+	# get all points in V_i
+	# check which ones of those are in cell
+
+	dv.getIntersection(cell)
+
+	# coords to vertex index?????????????????????????
+
+
+
 def getCellWeightLayers(weightMapping, positionMapping, cell):
 	intervals = helper.cell2intervals(cell[1], cell[0])
 	points = []

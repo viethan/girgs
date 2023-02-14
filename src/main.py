@@ -6,6 +6,10 @@ E = []
 n = 4
 d = 2
 
+weightMapping = {}
+w_0 = min(weightMapping.values())
+W = sum(weightMapping.values())
+
 # 1. Sample Positions
 
 positionMapping = {}
@@ -14,22 +18,45 @@ for i in range(1, n+1):
 
 # 2. Determine weight layers V_i
 
+weightLayers = weightlayers.getWeightLayers(weightMapping)
+
 # 3. Build cell-points intersection data structures
 
-for i in range(1, L+1):
-	vol = (weightMapping[i] * weightMapping[0]) / sum(weightMapping.values())
+dv = {}
+
+for layer in weightLayers.keys():
+	pts = [positionMapping[point] for point in weightLayers[layer]]
+	w_i = (2 ** layer) * w_0
+	vol = (w_i * w_0) / W
+	dv[layer] = intersection.CellPointsIntersection(vol, pts, d)
 
 # 4. Sample edges between V_i and V_j
 
-for i in range(1, L+1):
-	for j in range(i+1, L+1):
-		vol = (weightMapping[i] * weightMapping[j]) / sum(weightMapping.values())
+for layer_i in weightLayers.keys():
+	for layer_j in weightLayers.keys():
+		w_i, w_j = (2 ** layer_i) * w_0, (2 ** layer_j) * w_0
+		vol = (w_i * w_j) / W
+		pv = partition.Partitioning(vol, d)
+
+		for level, pair in pv.P:
+			A, B = pair
+
+			if level == pv.l : # type I
+				
 
 
-		for 
-			if type I:
 
+
+
+				
 
 			if type II:
 				p_hat = 
 				r = geo(p_hat)
+
+				while r <= :
+
+					r += geo(p_hat)
+
+
+		if layer_i == layer_j:
