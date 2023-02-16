@@ -30,7 +30,7 @@ for i in range(1, n+1):
 # 2. Determine weight layers V_i
 
 weightLayers = weightlayers.getWeightLayers(weightMapping)
-
+print(weightLayers)
 
 # 3. Build cell-points intersection data structures
 
@@ -52,6 +52,7 @@ for layer_i in weightLayers.keys():
 		w_i, w_j = (2 ** layer_i) * w_0, (2 ** layer_j) * w_0
 		vol = (w_i * w_j) / W
 		pv = partition.Partitioning(vol, d)
+		E_temp = []
 
 		for level, pair in pv.P:
 			A, B = pair
@@ -63,7 +64,7 @@ for layer_i in weightLayers.keys():
 						p_uv = min(1, (weightMapping[u] * weightMapping[v]) / W)
 
 						if np.random.binomial(1, p_uv):
-							E.append([u, v])
+							E_temp.append([u, v])
 
 		# 	else: # type II
 		# 		phat = min(c * (1/(d(A,B)**(alpha*d))) * (((w_i * w_j) / W) ** (alpha)), 1)
@@ -76,6 +77,11 @@ for layer_i in weightLayers.keys():
 		# 			r += geo(p_hat)
 
 
-		# if layer_i == layer_j:
+		if layer_i == layer_j:
+			for u, v in E_temp:
+				if u <= v:
+					E.append([u, v])
+		else:
+			E.extend(E_temp)
 
 print(E)
