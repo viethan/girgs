@@ -1,5 +1,5 @@
 import math
-import helper
+import buildingblocks.helper as helper
 
 def getWeightLayers(weightMapping):
 	weightLayers = {}
@@ -16,37 +16,37 @@ def getWeightLayers(weightMapping):
 	return weightLayers
 
 
-def getCellWeightLayers(dv, cell):
-	# get all points in V_i
-	# check which ones of those are in cell
+# def getCellWeightLayers(dv, cell):
+# 	# get all points in V_i
+# 	# check which ones of those are in cell
 
-	dv.getIntersection(cell)
+# 	return dv.getIntersection(cell)
 
-	# coords to vertex index?????????????????????????
+# 	# coords to vertex index?????????????????????????
 
 
 
-def getCellWeightLayers(weightMapping, positionMapping, cell):
-	intervals = helper.cell2intervals(cell[1], cell[0])
-	points = []
+# def getCellWeightLayers(weightMapping, positionMapping, cell):
+# 	intervals = helper.cell2intervals(cell[1], cell[0])
+# 	points = []
 
-	for k in positionMapping.keys():
-		p = positionMapping[k]
+# 	for k in positionMapping.keys():
+# 		p = positionMapping[k]
 
-		valid = True
-		for i, coord in enumerate(p):
-			if not (intervals[i][0] <= coord and coord <= intervals[i][1]):
-				valid = False
-				break
+# 		valid = True
+# 		for i, coord in enumerate(p):
+# 			if not (intervals[i][0] <= coord and coord <= intervals[i][1]):
+# 				valid = False
+# 				break
 
-		if valid:
-			points.append(k)
+# 		if valid:
+# 			points.append(k)
 
-	subsetWeightMapping = {}
-	for point in points:
-		subsetWeightMapping[point] = weightMapping[point]
+# 	subsetWeightMapping = {}
+# 	for point in points:
+# 		subsetWeightMapping[point] = weightMapping[point]
 
-	return getWeightLayers(subsetWeightMapping)
+# 	return getWeightLayers(subsetWeightMapping)
 
 
 # weightMapping = {}

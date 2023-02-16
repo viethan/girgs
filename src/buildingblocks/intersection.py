@@ -1,11 +1,11 @@
 import math
-import helper
+import buildingblocks.helper as helper
 
 class CellPointsIntersection:
 	def __init__(self, v, P, d):
 		self.d = d
 		self.l, self.mu = helper.roundUpCellVol(v, d)
-		self.cells = helper.getCells(self.l, d)
+		self.cells = helper.getCells(self.l, d) # might want to do this only once?
 
 		self.A = []
 		for point in P:
@@ -19,6 +19,9 @@ class CellPointsIntersection:
 
 	def __intersection(self, C):
 		old_l = C[0]
+
+		if old_l > self.l: # cell C has to have a volume at least v
+			return -1, -1
 
 		# find indices in cells of lowest and highest of C
 		lowest, highest = [], []

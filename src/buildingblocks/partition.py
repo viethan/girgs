@@ -1,13 +1,18 @@
 import math
-import helper
+import buildingblocks.helper as helper
 
 class Partitioning:
 	def __init__(self, v, d):
 		self.d = d
 		self.l, self.mu = helper.roundUpCellVol(v, d)
-		print("level:", self.l)
+		self.P = set()
 
-		self.P = set() 
+		if self.l <= 0:
+			self.l = 0
+			self.P.add((0, ((0.0, 0.0), (0.0, 0.0))))
+			return
+
+		 
 		for level in range(self.l, 0, -1):
 			cells = helper.getCells(level, self.d)
 

@@ -54,10 +54,9 @@ def getCells(l, d):
 		# print(cube)
 		cell = intervals2cell(cube, l) 
 
-		print(cell, i)
+		# print(cube, i)
 		cells[tuple(cell)] = i
 
-	print(len(ordering))
 	return cells
 
 def getChildren(node, l, d):
