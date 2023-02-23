@@ -5,7 +5,7 @@ class CellPointsIntersection:
 	def __init__(self, v, P, d):
 		self.d = d
 		self.l, self.mu = helper.roundUpCellVol(v, d)
-		self.cells = helper.getCells(self.l, d) # might want to do this only once?
+		self.cells = helper.getCells(self.l, d) # might want to do this only once?????????????????? and also the whole __intersection
 
 		self.A = []
 		for point in P:
