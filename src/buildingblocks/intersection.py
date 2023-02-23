@@ -2,20 +2,22 @@ import math
 import buildingblocks.helper as helper
 
 class CellPointsIntersection:
-	def __init__(self, v, P, d):
+	def __init__(self, v, P, v_coords, d):
 		self.d = d
 		self.l, self.mu = helper.roundUpCellVol(v, d)
 		self.cells = helper.getCells(self.l, d) # might want to do this only once?????????????????? and also the whole __intersection
 
 		self.A = []
 		for point in P:
+			coords = v_coords[point]
 			cell = []
+
 			for i in range(d):
-				cell.append(math.floor(point[i] / (2 ** (-self.l))))
+				cell.append(math.floor(coords[i] / (2 ** (-self.l))))
 
-			self.A.append([self.cells[tuple(cell)], point])	
-		self.A.sort()
+			self.A.append([self.cells[tuple(cell)], point])
 
+		self.A.sort()		
 
 	def __intersection(self, C):
 		old_l = C[0]

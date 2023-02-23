@@ -3,7 +3,7 @@ from graph_tool.all import *
 import buildingblocks.helper as helper
 
 def getWeightLayers(g, v_weight):
-	weightLayers = {}
+	weightLayers, L = {}, 0
 
 	# find minimum weight
 	w_0 = float('inf')
@@ -19,8 +19,8 @@ def getWeightLayers(g, v_weight):
 
 		if layer not in weightLayers:
 			weightLayers[layer] = []
+			L = max(L, layer)
+
 		weightLayers[layer].append(v)
 
-	return weightLayers
-
-# return L!!!!
+	return L, weightLayers
