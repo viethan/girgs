@@ -90,3 +90,33 @@ def getNeighbours(c, l, d, i, comb, neighbours):
 	comb.append(decreasing)
 	getNeighbours(c, l, d, i+1, comb, neighbours)
 	comb.pop()
+
+def distTorus(coords1, coords2):
+	accum = 0
+
+	for i in range(len(coords1)):
+		dist = abs(coords2[i] - coords1[i])
+
+		if dist > 0.5:
+			dist = 1 - dist
+
+		accum = accum + (dist ** 2)
+
+	return math.sqrt(accum)
+
+# temporary until we find fix
+def distTorusCubes(A, B, level):
+	A = cell2intervals(A, level)
+	B = cell2intervals(B, level)
+
+	u, v = [], []
+
+	for interval in A:
+		left, right = interval
+		u.append(left + (right - left) / 2)
+
+	for interval in B:
+		left, right = interval
+		v.append(left + (right - left) / 2)
+
+	return distTorus(u, v)

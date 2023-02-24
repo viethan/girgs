@@ -9,12 +9,8 @@ import buildingblocks.geo as geo
 import buildingblocks.intersection as intersection
 import buildingblocks.helper as helper
 
-
-def dist(a, b):
-	return np.random.uniform(low=np.nextafter(0.1, 1.0), high=1.0) 
-
-N = 100
-alpha = 100
+N = 1000
+alpha = 300 # 1.5 to 2.5 
 beta = 2.5
 d = 2
 c = 2
@@ -79,25 +75,28 @@ for i in range(1, L+1):
 					for v in V_jB:
 
 						# Use trivial sampling algorithm
-						p_uv = min((1 / (dist(v_coords[u], v_coords[v]) ** (alpha * d))) * (((v_weight[u] * v_weight[v]) / W) ** (alpha)), 1) 
-						print(p_uv)
+						p_uv = min((1 / (helper.distTorus(v_coords[u], v_coords[v]) ** (alpha * d) + 2.22e-308)) * (((v_weight[u] * v_weight[v]) / W) ** (alpha)), 1) 
+						#print(p_uv)
 						if np.random.binomial(1, p_uv): # with probability p_uv add edge
 							if i != j or (i == j and int(u) < int(v)): # if same layer, idx u must be less than idx v
 								g.add_edge(u, v)
 
 
 			else: # If type II
-				w_i, w_j = 3, 4
-				#phat = min(c * (1 / (dist(A,B) ** (alpha * d))) * (((w_i * w_j) / W) ** (alpha)), 1) # ??
-				phat = 0.9
+				# print("1 ", helper.distTorusCubes(A, B, level))
+				# print("2 ", (helper.distTorusCubes(A, B, level) ** (alpha * d) + 2.22e-308))
+				# print("3 ", (1 / (helper.distTorusCubes(A, B, level) ** (alpha * d) + 2.22e-308)))
+				# print("4 ", w_i, w_j, W, (((w_i * w_j) / W) ** (alpha)))
+				# phat = min(c * (1 / (helper.distTorusCubes(A, B, level) ** (alpha * d) + 2.22e-308)) * (((w_i * w_j) / W) ** (alpha)), 1) # ??
+				phat = 1
 				r = geo.geo(phat)
 
 				while r <= len(V_iA) * len(V_jB):
 					u = dv[i].getKthPoint([level, A], math.floor(r / len(V_jB)) - 1) 
 					v = dv[j].getKthPoint([level, B], r % len(V_jB) - 1) # 0-index??????
 
-					p_uv = min((1 / (dist(v_coords[u], v_coords[v]) ** (alpha * d))) * (((v_weight[u] * v_weight[v]) / W) ** (alpha)), 1)
-					print(p_uv / phat)
+					p_uv = min((1 / (helper.distTorus(v_coords[u], v_coords[v]) ** (alpha * d) + 2.22e-308)) * (((v_weight[u] * v_weight[v]) / W) ** (alpha)), 1)
+					#print(p_uv / phat)
 					if np.random.binomial(1, p_uv / phat):
 						if i != j or (i == j and int(u) < int(v)): # if same layer, idx u must be less than idx v
 							g.add_edge(u, v)
@@ -105,4 +104,4 @@ for i in range(1, L+1):
 					r += geo.geo(phat)
 
 
-graph_draw(g, vertex_text=g.vertex_index, output="temp.pdf")
+graph_draw(g, pos=v_coords, output="temp.pdf")
