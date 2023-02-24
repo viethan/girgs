@@ -72,8 +72,6 @@ def getChildren(node, l, d):
 	#print()
 	return children_cells
 
-
-
 def getNeighbours(c, l, d, i, comb, neighbours):
 	if i == len(c):
 		neighbours.append(comb[:])
