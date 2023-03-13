@@ -1,10 +1,11 @@
 import math
 import buildingblocks.helper as helper
+from decimal import *
 
 class CellPointsIntersection:
 	def __init__(self, v, P, v_coords, d):
 		self.d = d
-		self.l, self.mu = helper.roundUpCellVol(v, d)
+		self.l, self.mu = helper.roundUpCellVolume(v, d)
 		self.cells = helper.getCells(self.l, d) # might want to do this only once?????????????????? and also the whole __intersection
 
 		self.A = []
@@ -13,16 +14,18 @@ class CellPointsIntersection:
 			cell = []
 
 			for i in range(d):
-				cell.append(math.floor(coords[i] / (2 ** (-self.l))))
+				cell.append(math.floor(coords[i] / Decimal(2 ** (-self.l))))
 
 			self.A.append([self.cells[tuple(cell)], point])
 
 		self.A.sort()		
 
 	def __intersection(self, C):
+		#print("wtf1")
 		old_l = C[0]
 
 		if old_l > self.l: # cell C has to have a volume at least v
+			print("wtffffffffffffffffffff")
 			return -1, -1
 
 		# find indices in cells of lowest and highest of C
@@ -31,18 +34,22 @@ class CellPointsIntersection:
 			lowest.append((C[1][i] * 2**(-old_l)) / (2**(-self.l)))
 			highest.append(((C[1][i] + 1) * 2**(-old_l)) / (2**(-self.l)) - 1)
 
+			#print("wtf2")
+
 		left = self.cells[tuple(lowest)]
 		right = self.cells[tuple(highest)]
 
 		# determine first and last point in C intersect P
 		s_c, e_c = -1, -1
 		for i, point in enumerate(self.A):
+			#print("wtf3", i, len(self.A))
 			cell_idx, p = point
 			if cell_idx >= left:
 				s_c = i
 				break
 
 		for i, point in reversed(list(enumerate(self.A))):
+			#print("wtf4", i, len(self.A))
 			cell_idx, p = point
 			if cell_idx <= right:
 				e_c = i

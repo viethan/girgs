@@ -4,7 +4,7 @@ import buildingblocks.helper as helper
 class Partitioning:
 	def __init__(self, v, d):
 		self.d = d
-		self.l, self.mu = helper.roundUpCellVol(v, d)
+		self.l, self.mu = helper.roundUpCellVolume(v, d)
 		self.P = set()
 
 		if self.l <= 0:
@@ -16,7 +16,7 @@ class Partitioning:
 		for level in range(self.l, 0, -1):
 			cells = helper.getCells(level, self.d)
 
-			for c in cells.keys():
+			for c in cells:
 				neighbours = []
 				helper.getNeighbours(c, level, self.d, 0, [], neighbours)
 

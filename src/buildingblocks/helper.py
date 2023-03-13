@@ -1,23 +1,10 @@
 import math
+from decimal import *
 
-# returns the smallest volume >= to x
-# when we have a d-dimensional hypercube
-def roundUpCellVol(x, d):
+def roundUpCellVolume(x, d):
 	x = x ** (-1)
 	l = math.floor(math.log(x, 2**d))
 	return l, 2 ** ((-1) * l * d)
-
-def cell2intervals(node, l):
-	intervals = []
-	for c in node:
-		intervals.append([c * (2 ** (-l)), (c+1) * (2 ** (-l))])
-	return intervals
-
-def intervals2cell(node, l):
-	cell = []
-	for interval in node:
-		cell.append(interval[0] / (2 ** (-l))) 
-	return cell
 
 def getMiniCubes(comb, node, i, minicubes):
 	if i is len(node):
@@ -51,13 +38,44 @@ def getCells(l, d):
 
 	cells = {}
 	for i, cube in enumerate(ordering):
-		# print(cube)
+		print(cube)
 		cell = intervals2cell(cube, l) 
 
-		# print(cube, i)
 		cells[tuple(cell)] = i
 
 	return cells
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def cell2intervals(node, l):
+	intervals = []
+	for c in node:
+		intervals.append([c * (2 ** (-l)), (c+1) * (2 ** (-l))])
+	return intervals
+
+def intervals2cell(node, l):
+	cell = []
+	for interval in node:
+		cell.append(interval[0] / (2 ** (-l))) 
+	return cell
 
 def getChildren(node, l, d):
 	node = cell2intervals(node, l)
@@ -92,20 +110,21 @@ def getNeighbours(c, l, d, i, comb, neighbours):
 	comb.pop()
 
 def distTorus(coords1, coords2):
-	accum = 0
+	accum = Decimal('0')
 
 	for i in range(len(coords1)):
 		dist = abs(coords2[i] - coords1[i])
 
 		if dist > 0.5:
-			dist = 1 - dist
+			dist = Decimal(1 - dist)
 
 		accum = accum + (dist ** 2)
 
-	return math.sqrt(accum)
+	return accum.sqrt()
 
 # temporary until we find fix
 def distTorusCubes(A, B, level):
+	print("??????????????????????????????/")
 	A = cell2intervals(A, level)
 	B = cell2intervals(B, level)
 
