@@ -10,14 +10,10 @@ def test_DNuOptimized():
         [0.9, 0.3],
         [0.95, 0.95]
     ])
-    nu = 0.0625
-
-    print("hello")
+    nu = 0.015625
 
     # Initialize the DNuOptimized data structure
     d_nu = DNuOptimized(points, nu)
-
-    print("created!!!!")
 
     # Test cell_size
     cell_coords = np.array([0.1, 0.2])

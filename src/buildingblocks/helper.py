@@ -37,9 +37,9 @@ def interleave(coords, l, d):
 	index = 0
 
 	for b in range(l):
-		for i, x in enumerate(reversed(coords), 1):
+		for i, x in enumerate(reversed(coords)):
 			bit = (int(x) >> b) & 1
-			shifted_bit = bit << (b * d + (i-1))
+			shifted_bit = bit << (b * d + (i))
 			index |= shifted_bit
 	return index
 
@@ -54,7 +54,7 @@ def getCells(l, d):
 		idx = 2 * (cell[0] % 2) + (cell[1] % 2)
 		idxo = 2 * math.floor(cell[0] / 2) + math.floor(cell[1]/ 2)
 
-		print(cell, i, interleave(cell, l, d))
+		print(cube, i)
 		cells[tuple(cell)] = i
 
 	#return cells

@@ -30,6 +30,7 @@ cdef class DNuOptimized:
 		print("d: ", self.d)
 		print("l: ", self.l)
 		print("mu: ", mu)
+		print("")
 
 		# Determine geometric ordering of cells and initialize prefix_sums
 		n_cells = int(ceil(1 / mu))
@@ -43,7 +44,6 @@ cdef class DNuOptimized:
 			self.prefix_sums[cell_idx + 1] += 1
 
 		for i in range(n_cells):
-			print(self.prefix_sums[i])
 			self.prefix_sums[i + 1] += self.prefix_sums[i]
 
 		# Initialize and fill A array
@@ -57,19 +57,21 @@ cdef class DNuOptimized:
 
 	def _cell_index(self, np.ndarray[np.float64_t, ndim=1] coords):
 		cdef int index = 0
-		cdef int i, bit_pos
+		cdef int i, b
 		cdef int *cell = <int*>calloc(self.d, sizeof(int))
 
+		# Obtain cell that point belongs to
 		for i in range(self.d):
 			cell[i] = <int>(coords[i] / pow(2, (-self.l)))
-			print(cell[i])
 
-		for bit_pos in range(self.l):
-			for i in range(self.d):
-				index |= ((cell[i] >> bit_pos) & 1) << (bit_pos * self.d + i)
+		# Obtain index of the cell
+		for b in range(self.l):
+			for i in range(self.d-1, -1, -1):
+				index |= ((cell[i] >> b) & 1) << (b * self.d + (self.d-i-1))
 
-		print("idx: ", index)
-		print("next")
+		print("point", coords)
+		print("cell idx it belongs to", index)
+		print("")
 		return index
 
 	def cell_size(self, np.ndarray[np.float64_t, ndim=1] coords):

@@ -1925,6 +1925,7 @@ static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_object;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_ImportError;
+static const char __pyx_k_[] = "";
 static const char __pyx_k_P[] = "P";
 static const char __pyx_k_d[] = "d: ";
 static const char __pyx_k_k[] = "k";
@@ -1933,16 +1934,15 @@ static const char __pyx_k_mu[] = "mu: ";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_nu[] = "nu";
 static const char __pyx_k_end[] = "end";
-static const char __pyx_k_idx[] = "idx: ";
 static const char __pyx_k_file[] = "file";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
-static const char __pyx_k_next[] = "next";
 static const char __pyx_k_nu_2[] = "nu: ";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_dtype[] = "dtype";
 static const char __pyx_k_empty[] = "empty";
 static const char __pyx_k_numpy[] = "numpy";
+static const char __pyx_k_point[] = "point";
 static const char __pyx_k_print[] = "print";
 static const char __pyx_k_range[] = "range";
 static const char __pyx_k_coords[] = "coords";
@@ -1959,13 +1959,16 @@ static const char __pyx_k_DNuOptimized[] = "DNuOptimized";
 static const char __pyx_k_reduce_cython[] = "__reduce_cython__";
 static const char __pyx_k_setstate_cython[] = "__setstate_cython__";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
+static const char __pyx_k_cell_idx_it_belongs_to[] = "cell idx it belongs to";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_numpy_core_umath_failed_to_impor[] = "numpy.core.umath failed to import";
 static const char __pyx_k_self_prefix_sums_cannot_be_conve[] = "self.prefix_sums cannot be converted to a Python object for pickling";
+static PyObject *__pyx_kp_s_;
 static PyObject *__pyx_n_s_DNuOptimized;
 static PyObject *__pyx_n_s_ImportError;
 static PyObject *__pyx_n_s_P;
 static PyObject *__pyx_n_s_TypeError;
+static PyObject *__pyx_kp_s_cell_idx_it_belongs_to;
 static PyObject *__pyx_n_s_cell_index;
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_coords;
@@ -1975,14 +1978,12 @@ static PyObject *__pyx_n_s_empty;
 static PyObject *__pyx_n_s_end;
 static PyObject *__pyx_n_s_file;
 static PyObject *__pyx_n_s_getstate;
-static PyObject *__pyx_kp_s_idx;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_k;
 static PyObject *__pyx_kp_s_l;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_kp_s_mu;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_next;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_nu;
 static PyObject *__pyx_kp_s_nu_2;
@@ -1990,6 +1991,7 @@ static PyObject *__pyx_n_s_numpy;
 static PyObject *__pyx_kp_s_numpy_core_multiarray_failed_to;
 static PyObject *__pyx_kp_s_numpy_core_umath_failed_to_impor;
 static PyObject *__pyx_n_s_object;
+static PyObject *__pyx_n_s_point;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_reduce;
@@ -2006,11 +2008,11 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_6kth_point_in_cell(struct __pyx_
 static PyObject *__pyx_pf_5girgs_12DNuOptimized_8__reduce_cython__(CYTHON_UNUSED struct __pyx_obj_5girgs_DNuOptimized *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_5girgs_12DNuOptimized_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_5girgs_DNuOptimized *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_5girgs_DNuOptimized(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
-static PyObject *__pyx_slice_;
-static PyObject *__pyx_tuple__2;
+static PyObject *__pyx_slice__2;
 static PyObject *__pyx_tuple__3;
 static PyObject *__pyx_tuple__4;
 static PyObject *__pyx_tuple__5;
+static PyObject *__pyx_tuple__6;
 /* Late includes */
 
 /* "girgs.pyx":18
@@ -2225,7 +2227,7 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
  * 		print("d: ", self.d)
  * 		print("l: ", self.l)             # <<<<<<<<<<<<<<
  * 		print("mu: ", mu)
- * 
+ * 		print("")
  */
   __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_self->l); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 31, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2244,8 +2246,8 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
  * 		print("d: ", self.d)
  * 		print("l: ", self.l)
  * 		print("mu: ", mu)             # <<<<<<<<<<<<<<
+ * 		print("")
  * 
- * 		# Determine geometric ordering of cells and initialize prefix_sums
  */
   __pyx_t_2 = PyFloat_FromDouble(__pyx_v_mu); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -2260,7 +2262,16 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
   if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "girgs.pyx":35
+  /* "girgs.pyx":33
+ * 		print("l: ", self.l)
+ * 		print("mu: ", mu)
+ * 		print("")             # <<<<<<<<<<<<<<
+ * 
+ * 		# Determine geometric ordering of cells and initialize prefix_sums
+ */
+  if (__Pyx_PrintOne(0, __pyx_kp_s_) < 0) __PYX_ERR(0, 33, __pyx_L1_error)
+
+  /* "girgs.pyx":36
  * 
  * 		# Determine geometric ordering of cells and initialize prefix_sums
  * 		n_cells = int(ceil(1 / mu))             # <<<<<<<<<<<<<<
@@ -2269,7 +2280,7 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
  */
   __pyx_v_n_cells = ((int)ceil((1.0 / __pyx_v_mu)));
 
-  /* "girgs.pyx":37
+  /* "girgs.pyx":38
  * 		n_cells = int(ceil(1 / mu))
  * 
  * 		self.prefix_sums = <int*>calloc(n_cells + 1, sizeof(int))             # <<<<<<<<<<<<<<
@@ -2278,7 +2289,7 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
  */
   __pyx_v_self->prefix_sums = ((int *)calloc((__pyx_v_n_cells + 1), (sizeof(int))));
 
-  /* "girgs.pyx":40
+  /* "girgs.pyx":41
  * 
  * 		# Compute prefix_sums
  * 		for i in range(n_points):             # <<<<<<<<<<<<<<
@@ -2290,27 +2301,27 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "girgs.pyx":41
+    /* "girgs.pyx":42
  * 		# Compute prefix_sums
  * 		for i in range(n_points):
  * 			point = P[i, :]             # <<<<<<<<<<<<<<
  * 			cell_idx = self._cell_index(point)
  * 			self.prefix_sums[cell_idx + 1] += 1
  */
-    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_From_int(__pyx_v_i); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_GIVEREF(__pyx_t_1);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_1);
-    __Pyx_INCREF(__pyx_slice_);
-    __Pyx_GIVEREF(__pyx_slice_);
-    PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_slice_);
+    __Pyx_INCREF(__pyx_slice__2);
+    __Pyx_GIVEREF(__pyx_slice__2);
+    PyTuple_SET_ITEM(__pyx_t_2, 1, __pyx_slice__2);
     __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_P), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 41, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_P), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 41, __pyx_L1_error)
+    if (!(likely(((__pyx_t_1) == Py_None) || likely(__Pyx_TypeTest(__pyx_t_1, __pyx_ptype_5numpy_ndarray))))) __PYX_ERR(0, 42, __pyx_L1_error)
     __pyx_t_6 = ((PyArrayObject *)__pyx_t_1);
     {
       __Pyx_BufFmt_StackElem __pyx_stack[1];
@@ -2327,20 +2338,20 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
         __pyx_t_8 = __pyx_t_9 = __pyx_t_10 = 0;
       }
       __pyx_pybuffernd_point.diminfo[0].strides = __pyx_pybuffernd_point.rcbuffer->pybuffer.strides[0]; __pyx_pybuffernd_point.diminfo[0].shape = __pyx_pybuffernd_point.rcbuffer->pybuffer.shape[0];
-      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 41, __pyx_L1_error)
+      if (unlikely(__pyx_t_7 < 0)) __PYX_ERR(0, 42, __pyx_L1_error)
     }
     __pyx_t_6 = 0;
     __Pyx_XDECREF_SET(__pyx_v_point, ((PyArrayObject *)__pyx_t_1));
     __pyx_t_1 = 0;
 
-    /* "girgs.pyx":42
+    /* "girgs.pyx":43
  * 		for i in range(n_points):
  * 			point = P[i, :]
  * 			cell_idx = self._cell_index(point)             # <<<<<<<<<<<<<<
  * 			self.prefix_sums[cell_idx + 1] += 1
  * 
  */
-    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cell_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_PyObject_GetAttrStr(((PyObject *)__pyx_v_self), __pyx_n_s_cell_index); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __pyx_t_11 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_2))) {
@@ -2354,14 +2365,14 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
     }
     __pyx_t_1 = (__pyx_t_11) ? __Pyx_PyObject_Call2Args(__pyx_t_2, __pyx_t_11, ((PyObject *)__pyx_v_point)) : __Pyx_PyObject_CallOneArg(__pyx_t_2, ((PyObject *)__pyx_v_point));
     __Pyx_XDECREF(__pyx_t_11); __pyx_t_11 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 42, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 42, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyInt_As_int(__pyx_t_1); if (unlikely((__pyx_t_7 == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 43, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_v_cell_idx = __pyx_t_7;
 
-    /* "girgs.pyx":43
+    /* "girgs.pyx":44
  * 			point = P[i, :]
  * 			cell_idx = self._cell_index(point)
  * 			self.prefix_sums[cell_idx + 1] += 1             # <<<<<<<<<<<<<<
@@ -2372,33 +2383,21 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
     (__pyx_v_self->prefix_sums[__pyx_t_12]) = ((__pyx_v_self->prefix_sums[__pyx_t_12]) + 1);
   }
 
-  /* "girgs.pyx":45
+  /* "girgs.pyx":46
  * 			self.prefix_sums[cell_idx + 1] += 1
  * 
  * 		for i in range(n_cells):             # <<<<<<<<<<<<<<
- * 			print(self.prefix_sums[i])
  * 			self.prefix_sums[i + 1] += self.prefix_sums[i]
+ * 
  */
   __pyx_t_3 = __pyx_v_n_cells;
   __pyx_t_4 = __pyx_t_3;
   for (__pyx_t_5 = 0; __pyx_t_5 < __pyx_t_4; __pyx_t_5+=1) {
     __pyx_v_i = __pyx_t_5;
 
-    /* "girgs.pyx":46
- * 
- * 		for i in range(n_cells):
- * 			print(self.prefix_sums[i])             # <<<<<<<<<<<<<<
- * 			self.prefix_sums[i + 1] += self.prefix_sums[i]
- * 
- */
-    __pyx_t_1 = __Pyx_PyInt_From_int((__pyx_v_self->prefix_sums[__pyx_v_i])); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_1);
-    if (__Pyx_PrintOne(0, __pyx_t_1) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-
     /* "girgs.pyx":47
+ * 
  * 		for i in range(n_cells):
- * 			print(self.prefix_sums[i])
  * 			self.prefix_sums[i + 1] += self.prefix_sums[i]             # <<<<<<<<<<<<<<
  * 
  * 		# Initialize and fill A array
@@ -2466,9 +2465,9 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_13);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_13);
-    __Pyx_INCREF(__pyx_slice_);
-    __Pyx_GIVEREF(__pyx_slice_);
-    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_slice_);
+    __Pyx_INCREF(__pyx_slice__2);
+    __Pyx_GIVEREF(__pyx_slice__2);
+    PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_slice__2);
     __pyx_t_13 = 0;
     __pyx_t_13 = __Pyx_PyObject_GetItem(((PyObject *)__pyx_v_P), __pyx_t_1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 52, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_13);
@@ -2593,7 +2592,7 @@ static int __pyx_pf_5girgs_12DNuOptimized___init__(struct __pyx_obj_5girgs_DNuOp
  * 
  * 	def _cell_index(self, np.ndarray[np.float64_t, ndim=1] coords):             # <<<<<<<<<<<<<<
  * 		cdef int index = 0
- * 		cdef int i, bit_pos
+ * 		cdef int i, b
  */
 
 /* Python wrapper */
@@ -2620,7 +2619,7 @@ static PyObject *__pyx_pw_5girgs_12DNuOptimized_3_cell_index(PyObject *__pyx_v_s
 static PyObject *__pyx_pf_5girgs_12DNuOptimized_2_cell_index(struct __pyx_obj_5girgs_DNuOptimized *__pyx_v_self, PyArrayObject *__pyx_v_coords) {
   int __pyx_v_index;
   int __pyx_v_i;
-  int __pyx_v_bit_pos;
+  int __pyx_v_b;
   int *__pyx_v_cell;
   __Pyx_LocalBuf_ND __pyx_pybuffernd_coords;
   __Pyx_Buffer __pyx_pybuffer_coords;
@@ -2630,11 +2629,9 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_2_cell_index(struct __pyx_obj_5g
   int __pyx_t_2;
   int __pyx_t_3;
   Py_ssize_t __pyx_t_4;
-  PyObject *__pyx_t_5 = NULL;
-  int __pyx_t_6;
-  int __pyx_t_7;
-  int __pyx_t_8;
-  PyObject *__pyx_t_9 = NULL;
+  int __pyx_t_5;
+  PyObject *__pyx_t_6 = NULL;
+  PyObject *__pyx_t_7 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -2653,14 +2650,14 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_2_cell_index(struct __pyx_obj_5g
  * 
  * 	def _cell_index(self, np.ndarray[np.float64_t, ndim=1] coords):
  * 		cdef int index = 0             # <<<<<<<<<<<<<<
- * 		cdef int i, bit_pos
+ * 		cdef int i, b
  * 		cdef int *cell = <int*>calloc(self.d, sizeof(int))
  */
   __pyx_v_index = 0;
 
   /* "girgs.pyx":61
  * 		cdef int index = 0
- * 		cdef int i, bit_pos
+ * 		cdef int i, b
  * 		cdef int *cell = <int*>calloc(self.d, sizeof(int))             # <<<<<<<<<<<<<<
  * 
  * 		for i in range(self.d):
@@ -2672,7 +2669,7 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_2_cell_index(struct __pyx_obj_5g
  * 
  * 		for i in range(self.d):             # <<<<<<<<<<<<<<
  * 			cell[i] = <int>(coords[i] / pow(2, (-self.l)))
- * 			print(cell[i])
+ * 
  */
   __pyx_t_1 = __pyx_v_self->d;
   __pyx_t_2 = __pyx_t_1;
@@ -2683,101 +2680,105 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_2_cell_index(struct __pyx_obj_5g
  * 
  * 		for i in range(self.d):
  * 			cell[i] = <int>(coords[i] / pow(2, (-self.l)))             # <<<<<<<<<<<<<<
- * 			print(cell[i])
  * 
+ * 		for b in range(self.l):
  */
     __pyx_t_4 = __pyx_v_i;
     (__pyx_v_cell[__pyx_v_i]) = ((int)((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_coords.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_coords.diminfo[0].strides)) / pow(2.0, (-__pyx_v_self->l))));
-
-    /* "girgs.pyx":65
- * 		for i in range(self.d):
- * 			cell[i] = <int>(coords[i] / pow(2, (-self.l)))
- * 			print(cell[i])             # <<<<<<<<<<<<<<
- * 
- * 		for bit_pos in range(self.l):
- */
-    __pyx_t_5 = __Pyx_PyInt_From_int((__pyx_v_cell[__pyx_v_i])); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 65, __pyx_L1_error)
-    __Pyx_GOTREF(__pyx_t_5);
-    if (__Pyx_PrintOne(0, __pyx_t_5) < 0) __PYX_ERR(0, 65, __pyx_L1_error)
-    __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
 
-  /* "girgs.pyx":67
- * 			print(cell[i])
+  /* "girgs.pyx":66
+ * 			cell[i] = <int>(coords[i] / pow(2, (-self.l)))
  * 
- * 		for bit_pos in range(self.l):             # <<<<<<<<<<<<<<
- * 			for i in range(self.d):
- * 				index |= ((cell[i] >> bit_pos) & 1) << (bit_pos * self.d + i)
+ * 		for b in range(self.l):             # <<<<<<<<<<<<<<
+ * 			for i in range(self.d-1, -1, -1):
+ * 				index |= ((cell[i] >> b) & 1) << (b * self.d + (self.d-i-1))
  */
   __pyx_t_1 = __pyx_v_self->l;
   __pyx_t_2 = __pyx_t_1;
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
-    __pyx_v_bit_pos = __pyx_t_3;
+    __pyx_v_b = __pyx_t_3;
 
-    /* "girgs.pyx":68
+    /* "girgs.pyx":67
  * 
- * 		for bit_pos in range(self.l):
- * 			for i in range(self.d):             # <<<<<<<<<<<<<<
- * 				index |= ((cell[i] >> bit_pos) & 1) << (bit_pos * self.d + i)
+ * 		for b in range(self.l):
+ * 			for i in range(self.d-1, -1, -1):             # <<<<<<<<<<<<<<
+ * 				index |= ((cell[i] >> b) & 1) << (b * self.d + (self.d-i-1))
  * 
  */
-    __pyx_t_6 = __pyx_v_self->d;
-    __pyx_t_7 = __pyx_t_6;
-    for (__pyx_t_8 = 0; __pyx_t_8 < __pyx_t_7; __pyx_t_8+=1) {
-      __pyx_v_i = __pyx_t_8;
+    for (__pyx_t_5 = (__pyx_v_self->d - 1); __pyx_t_5 > -1; __pyx_t_5-=1) {
+      __pyx_v_i = __pyx_t_5;
 
-      /* "girgs.pyx":69
- * 		for bit_pos in range(self.l):
- * 			for i in range(self.d):
- * 				index |= ((cell[i] >> bit_pos) & 1) << (bit_pos * self.d + i)             # <<<<<<<<<<<<<<
+      /* "girgs.pyx":68
+ * 		for b in range(self.l):
+ * 			for i in range(self.d-1, -1, -1):
+ * 				index |= ((cell[i] >> b) & 1) << (b * self.d + (self.d-i-1))             # <<<<<<<<<<<<<<
  * 
- * 		print("idx: ", index)
+ * 		print("point", coords)
  */
-      __pyx_v_index = (__pyx_v_index | ((((__pyx_v_cell[__pyx_v_i]) >> __pyx_v_bit_pos) & 1) << ((__pyx_v_bit_pos * __pyx_v_self->d) + __pyx_v_i)));
+      __pyx_v_index = (__pyx_v_index | ((((__pyx_v_cell[__pyx_v_i]) >> __pyx_v_b) & 1) << ((__pyx_v_b * __pyx_v_self->d) + ((__pyx_v_self->d - __pyx_v_i) - 1))));
     }
   }
 
-  /* "girgs.pyx":71
- * 				index |= ((cell[i] >> bit_pos) & 1) << (bit_pos * self.d + i)
+  /* "girgs.pyx":70
+ * 				index |= ((cell[i] >> b) & 1) << (b * self.d + (self.d-i-1))
  * 
- * 		print("idx: ", index)             # <<<<<<<<<<<<<<
- * 		print("next")
+ * 		print("point", coords)             # <<<<<<<<<<<<<<
+ * 		print("cell idx it belongs to", index)
+ * 		print("")
+ */
+  __pyx_t_6 = PyTuple_New(2); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __Pyx_INCREF(__pyx_n_s_point);
+  __Pyx_GIVEREF(__pyx_n_s_point);
+  PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_n_s_point);
+  __Pyx_INCREF(((PyObject *)__pyx_v_coords));
+  __Pyx_GIVEREF(((PyObject *)__pyx_v_coords));
+  PyTuple_SET_ITEM(__pyx_t_6, 1, ((PyObject *)__pyx_v_coords));
+  if (__Pyx_PrintOne(0, __pyx_t_6) < 0) __PYX_ERR(0, 70, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+  /* "girgs.pyx":71
+ * 
+ * 		print("point", coords)
+ * 		print("cell idx it belongs to", index)             # <<<<<<<<<<<<<<
+ * 		print("")
  * 		return index
  */
-  __pyx_t_5 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_5);
-  __pyx_t_9 = PyTuple_New(2); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __Pyx_INCREF(__pyx_kp_s_idx);
-  __Pyx_GIVEREF(__pyx_kp_s_idx);
-  PyTuple_SET_ITEM(__pyx_t_9, 0, __pyx_kp_s_idx);
-  __Pyx_GIVEREF(__pyx_t_5);
-  PyTuple_SET_ITEM(__pyx_t_9, 1, __pyx_t_5);
-  __pyx_t_5 = 0;
-  if (__Pyx_PrintOne(0, __pyx_t_9) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
+  __pyx_t_6 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  __pyx_t_7 = PyTuple_New(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __Pyx_INCREF(__pyx_kp_s_cell_idx_it_belongs_to);
+  __Pyx_GIVEREF(__pyx_kp_s_cell_idx_it_belongs_to);
+  PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_kp_s_cell_idx_it_belongs_to);
+  __Pyx_GIVEREF(__pyx_t_6);
+  PyTuple_SET_ITEM(__pyx_t_7, 1, __pyx_t_6);
+  __pyx_t_6 = 0;
+  if (__Pyx_PrintOne(0, __pyx_t_7) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
   /* "girgs.pyx":72
- * 
- * 		print("idx: ", index)
- * 		print("next")             # <<<<<<<<<<<<<<
+ * 		print("point", coords)
+ * 		print("cell idx it belongs to", index)
+ * 		print("")             # <<<<<<<<<<<<<<
  * 		return index
  * 
  */
-  if (__Pyx_PrintOne(0, __pyx_n_s_next) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (__Pyx_PrintOne(0, __pyx_kp_s_) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
 
   /* "girgs.pyx":73
- * 		print("idx: ", index)
- * 		print("next")
+ * 		print("cell idx it belongs to", index)
+ * 		print("")
  * 		return index             # <<<<<<<<<<<<<<
  * 
  * 	def cell_size(self, np.ndarray[np.float64_t, ndim=1] coords):
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_9 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 73, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_9);
-  __pyx_r = __pyx_t_9;
-  __pyx_t_9 = 0;
+  __pyx_t_7 = __Pyx_PyInt_From_int(__pyx_v_index); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 73, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_7);
+  __pyx_r = __pyx_t_7;
+  __pyx_t_7 = 0;
   goto __pyx_L0;
 
   /* "girgs.pyx":58
@@ -2785,13 +2786,13 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_2_cell_index(struct __pyx_obj_5g
  * 
  * 	def _cell_index(self, np.ndarray[np.float64_t, ndim=1] coords):             # <<<<<<<<<<<<<<
  * 		cdef int index = 0
- * 		cdef int i, bit_pos
+ * 		cdef int i, b
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_XDECREF(__pyx_t_9);
+  __Pyx_XDECREF(__pyx_t_6);
+  __Pyx_XDECREF(__pyx_t_7);
   { PyObject *__pyx_type, *__pyx_value, *__pyx_tb;
     __Pyx_PyThreadState_declare
     __Pyx_PyThreadState_assign
@@ -3199,7 +3200,7 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_8__reduce_cython__(CYTHON_UNUSED
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self.prefix_sums cannot be converted to a Python object for pickling")
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3255,7 +3256,7 @@ static PyObject *__pyx_pf_5girgs_12DNuOptimized_10__setstate_cython__(CYTHON_UNU
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self.prefix_sums cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_Call(__pyx_builtin_TypeError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(1, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_Raise(__pyx_t_1, 0, 0, 0);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -3810,7 +3811,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_array(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__4, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 944, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 944, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -3942,7 +3943,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_umath(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 950, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 950, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4074,7 +4075,7 @@ static CYTHON_INLINE int __pyx_f_5numpy_import_ufunc(void) {
  * 
  * cdef extern from *:
  */
-      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__5, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 956, __pyx_L5_except_error)
+      __pyx_t_8 = __Pyx_PyObject_Call(__pyx_builtin_ImportError, __pyx_tuple__6, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(2, 956, __pyx_L5_except_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_Raise(__pyx_t_8, 0, 0, 0);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
@@ -4466,10 +4467,12 @@ static struct PyModuleDef __pyx_moduledef = {
 #endif
 
 static __Pyx_StringTabEntry __pyx_string_tab[] = {
+  {&__pyx_kp_s_, __pyx_k_, sizeof(__pyx_k_), 0, 0, 1, 0},
   {&__pyx_n_s_DNuOptimized, __pyx_k_DNuOptimized, sizeof(__pyx_k_DNuOptimized), 0, 0, 1, 1},
   {&__pyx_n_s_ImportError, __pyx_k_ImportError, sizeof(__pyx_k_ImportError), 0, 0, 1, 1},
   {&__pyx_n_s_P, __pyx_k_P, sizeof(__pyx_k_P), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
+  {&__pyx_kp_s_cell_idx_it_belongs_to, __pyx_k_cell_idx_it_belongs_to, sizeof(__pyx_k_cell_idx_it_belongs_to), 0, 0, 1, 0},
   {&__pyx_n_s_cell_index, __pyx_k_cell_index, sizeof(__pyx_k_cell_index), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_coords, __pyx_k_coords, sizeof(__pyx_k_coords), 0, 0, 1, 1},
@@ -4479,14 +4482,12 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_end, __pyx_k_end, sizeof(__pyx_k_end), 0, 0, 1, 1},
   {&__pyx_n_s_file, __pyx_k_file, sizeof(__pyx_k_file), 0, 0, 1, 1},
   {&__pyx_n_s_getstate, __pyx_k_getstate, sizeof(__pyx_k_getstate), 0, 0, 1, 1},
-  {&__pyx_kp_s_idx, __pyx_k_idx, sizeof(__pyx_k_idx), 0, 0, 1, 0},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_k, __pyx_k_k, sizeof(__pyx_k_k), 0, 0, 1, 1},
   {&__pyx_kp_s_l, __pyx_k_l, sizeof(__pyx_k_l), 0, 0, 1, 0},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_kp_s_mu, __pyx_k_mu, sizeof(__pyx_k_mu), 0, 0, 1, 0},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_next, __pyx_k_next, sizeof(__pyx_k_next), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_nu, __pyx_k_nu, sizeof(__pyx_k_nu), 0, 0, 1, 1},
   {&__pyx_kp_s_nu_2, __pyx_k_nu_2, sizeof(__pyx_k_nu_2), 0, 0, 1, 0},
@@ -4494,6 +4495,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_kp_s_numpy_core_multiarray_failed_to, __pyx_k_numpy_core_multiarray_failed_to, sizeof(__pyx_k_numpy_core_multiarray_failed_to), 0, 0, 1, 0},
   {&__pyx_kp_s_numpy_core_umath_failed_to_impor, __pyx_k_numpy_core_umath_failed_to_impor, sizeof(__pyx_k_numpy_core_umath_failed_to_impor), 0, 0, 1, 0},
   {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
+  {&__pyx_n_s_point, __pyx_k_point, sizeof(__pyx_k_point), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_reduce, __pyx_k_reduce, sizeof(__pyx_k_reduce), 0, 0, 1, 1},
@@ -4506,7 +4508,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 40, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 41, __pyx_L1_error)
   __pyx_builtin_object = __Pyx_GetBuiltinName(__pyx_n_s_object); if (!__pyx_builtin_object) __PYX_ERR(0, 50, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 2, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 944, __pyx_L1_error)
@@ -4519,16 +4521,16 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "girgs.pyx":41
+  /* "girgs.pyx":42
  * 		# Compute prefix_sums
  * 		for i in range(n_points):
  * 			point = P[i, :]             # <<<<<<<<<<<<<<
  * 			cell_idx = self._cell_index(point)
  * 			self.prefix_sums[cell_idx + 1] += 1
  */
-  __pyx_slice_ = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice_)) __PYX_ERR(0, 41, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_slice_);
-  __Pyx_GIVEREF(__pyx_slice_);
+  __pyx_slice__2 = PySlice_New(Py_None, Py_None, Py_None); if (unlikely(!__pyx_slice__2)) __PYX_ERR(0, 42, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_slice__2);
+  __Pyx_GIVEREF(__pyx_slice__2);
 
   /* "(tree fragment)":2
  * def __reduce_cython__(self):
@@ -4536,18 +4538,18 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self.prefix_sums cannot be converted to a Python object for pickling")
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_self_prefix_sums_cannot_be_conve); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(1, 2, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__2);
-  __Pyx_GIVEREF(__pyx_tuple__2);
+  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_self_prefix_sums_cannot_be_conve); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 2, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__3);
+  __Pyx_GIVEREF(__pyx_tuple__3);
 
   /* "(tree fragment)":4
  *     raise TypeError("self.prefix_sums cannot be converted to a Python object for pickling")
  * def __setstate_cython__(self, __pyx_state):
  *     raise TypeError("self.prefix_sums cannot be converted to a Python object for pickling")             # <<<<<<<<<<<<<<
  */
-  __pyx_tuple__3 = PyTuple_Pack(1, __pyx_kp_s_self_prefix_sums_cannot_be_conve); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(1, 4, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__3);
-  __Pyx_GIVEREF(__pyx_tuple__3);
+  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_self_prefix_sums_cannot_be_conve); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(1, 4, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__4);
+  __Pyx_GIVEREF(__pyx_tuple__4);
 
   /* "../../../anaconda3/envs/graph/lib/python3.10/site-packages/numpy/__init__.pxd":944
  *         __pyx_import_array()
@@ -4556,9 +4558,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_umath() except -1:
  */
-  __pyx_tuple__4 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(2, 944, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__4);
-  __Pyx_GIVEREF(__pyx_tuple__4);
+  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_multiarray_failed_to); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(2, 944, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__5);
+  __Pyx_GIVEREF(__pyx_tuple__5);
 
   /* "../../../anaconda3/envs/graph/lib/python3.10/site-packages/numpy/__init__.pxd":950
  *         _import_umath()
@@ -4567,9 +4569,9 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * cdef inline int import_ufunc() except -1:
  */
-  __pyx_tuple__5 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(2, 950, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_tuple__5);
-  __Pyx_GIVEREF(__pyx_tuple__5);
+  __pyx_tuple__6 = PyTuple_Pack(1, __pyx_kp_s_numpy_core_umath_failed_to_impor); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(2, 950, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__6);
+  __Pyx_GIVEREF(__pyx_tuple__6);
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
