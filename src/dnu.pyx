@@ -1,4 +1,4 @@
-# data_structure_optimized.pyx
+# dnu.pyx
 import numpy as np
 cimport numpy as np
 from libc.math cimport ceil, log2, floor, pow
@@ -9,7 +9,7 @@ import cython
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-cdef class DNuOptimized:
+cdef class DNu:
 	cdef int *prefix_sums
 	cdef np.ndarray A
 	cdef int d, l
@@ -104,10 +104,13 @@ cdef class DNuOptimized:
 	def cell_size(self, np.ndarray[np.float64_t, ndim=1] coords, int cell_l):
 		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
 
+		if cell_l > self.l:
+			return None
+
 		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))
 		highest_cell = ((coords + 1) * pow(2, (-cell_l))) / pow(2, (-self.l)) - 1
 
-		cdef int lowest_idx = self._cell_index(lowest_cell) # SEND CELL NOT POINT
+		cdef int lowest_idx = self._cell_index(lowest_cell)
 		cdef int highest_idx = self._cell_index(highest_cell)
 
 		print("coords", coords)
@@ -116,12 +119,23 @@ cdef class DNuOptimized:
 
 		return self.prefix_sums[highest_idx + 1] - self.prefix_sums[lowest_idx]
 
-	def kth_point_in_cell(self, np.ndarray[np.float64_t, ndim=1] coords, int k, int cell_l):
-		cdef int cell_idx = self._cell_index(coords)
-		cdef int start_idx = self.prefix_sums[cell_idx]
-		cdef int end_idx = self.prefix_sums[cell_idx + 1]
+	def kth_point_in_cell(self, np.ndarray[np.float64_t, ndim=1] coords, int cell_l, int k):
+		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
 
-		if k < 0 or k >= end_idx - start_idx:
+		if cell_l > self.l:
 			return None
 
-		return self.prefix_sums[start_idx + k]
+		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))
+		highest_cell = ((coords + 1) * pow(2, (-cell_l))) / pow(2, (-self.l)) - 1
+
+		cdef int lowest_idx = self._cell_index(lowest_cell)
+		cdef int highest_idx = self._cell_index(highest_cell)
+
+		print("coords", coords)
+		print("lowest_cell", lowest_cell, "lowest_idx", lowest_idx)
+		print("highest_cell", highest_cell, "highest_idx", highest_idx)
+
+		if k < 0 or k >= (self.prefix_sums[highest_idx + 1] - self.prefix_sums[lowest_idx]):
+			return None
+
+		return self.A[self.prefix_sums[lowest_idx] + k]

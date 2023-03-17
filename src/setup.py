@@ -5,5 +5,5 @@ import Cython.Compiler.Options
 Cython.Compiler.Options.annotate = True
 
 setup(
-	ext_modules=cythonize('girgs.pyx', annotate=True)
+	ext_modules=cythonize('dnu.pyx', annotate=True)
 )
