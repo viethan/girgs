@@ -43,7 +43,9 @@ def buildIntersection(v, P, v_coords, d):
 
 
 
-def countIntersection(C, s_i, A, l):
+def countIntersection(C, s_i, A, int l):
+	cdef int old_l
+
 	old_l = C[0]
 
 	if old_l > l: # cell C has to have a volume at least v
@@ -59,6 +61,7 @@ def countIntersection(C, s_i, A, l):
 	return s_i[tuple(highest)][1] - s_i[tuple(lowest)][0]
 
 def getIntersection(C, s_i, A, l):
+	cdef float old_l
 	old_l = C[0]
 
 	if old_l > l: # cell C has to have a volume at least v
@@ -73,7 +76,8 @@ def getIntersection(C, s_i, A, l):
 
 	return A[s_i[tuple(lowest)][0] : s_i[tuple(highest)][1]] # works even if we are past the arr
 
-def getkthIntersection(C, k, s_i, A):
+def getkthIntersection(C, k, s_i, A, l):
+	cdef int old_l
 	old_l = C[0]
 
 	if old_l > l: # cell C has to have a volume at least v

@@ -32,18 +32,32 @@ def getGeometricOrdering(node, l, d, ans):
 	for minicube in minicubes:
 		getGeometricOrdering(minicube, l-1, d, ans)
 
+
+def interleave(coords, l, d):
+	index = 0
+
+	for b in range(l):
+		for i, x in enumerate(reversed(coords), 1):
+			bit = (int(x) >> b) & 1
+			shifted_bit = bit << (b * d + (i-1))
+			index |= shifted_bit
+	return index
+
+
 def getCells(l, d):
 	ordering = []
 	getGeometricOrdering([[0, 1] for _ in range(d)], l, d, ordering)
 
 	cells = {}
 	for i, cube in enumerate(ordering):
-		print(cube)
-		cell = intervals2cell(cube, l) 
+		cell = intervals2cell(cube, l)
+		idx = 2 * (cell[0] % 2) + (cell[1] % 2)
+		idxo = 2 * math.floor(cell[0] / 2) + math.floor(cell[1]/ 2)
 
+		print(cell, i, interleave(cell, l, d))
 		cells[tuple(cell)] = i
 
-	return cells
+	#return cells
 
 
 

@@ -1,21 +1,21 @@
 import math
-import buildingblocks.helper as helper
-from decimal import *
+import helper as helper
 
 class CellPointsIntersection:
-	def __init__(self, v, P, v_coords, d):
+	def __init__(self, v, P, d):
 		self.d = d
 		self.l, self.mu = helper.roundUpCellVolume(v, d)
+		print("mu", self.mu)
 		self.cells = helper.getCells(self.l, d) # might want to do this only once?????????????????? and also the whole __intersection
 
 		self.A = []
 		for point in P:
-			coords = v_coords[point]
 			cell = []
 
 			for i in range(d):
-				cell.append(math.floor(coords[i] / Decimal(2 ** (-self.l))))
+				cell.append(math.floor(point[i] / (2 ** (-self.l))))
 
+			print(cell)
 			self.A.append([self.cells[tuple(cell)], point])
 
 		self.A.sort()		
@@ -86,6 +86,6 @@ class CellPointsIntersection:
 
 
 
-# P = [[0, 0], [0.2, 0.56], [0.3, 0.8], [0.6, 0.7], [0.7, 0.7], [0.8, 0.8]]
-# ds = CellPointsIntersection(0.0625, P, 2)
+P = [[0.3, 0.6]] #, [0.2, 0.56], [0.3, 0.8], [0.6, 0.7], [0.7, 0.7], [0.8, 0.8]]
+ds = CellPointsIntersection(0.25, P, 2)
 # print(ds.getIntersection([2, [2, 2]]))
