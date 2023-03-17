@@ -54,7 +54,7 @@ def getCells(l, d):
 		idx = 2 * (cell[0] % 2) + (cell[1] % 2)
 		idxo = 2 * math.floor(cell[0] / 2) + math.floor(cell[1]/ 2)
 
-		print(cube, i)
+		print(cell, i)
 		cells[tuple(cell)] = i
 
 	#return cells
