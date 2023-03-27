@@ -2014,7 +2014,6 @@ static PyObject *__pyx_pf_3dnu_3DNu_8__reduce_cython__(CYTHON_UNUSED struct __py
 static PyObject *__pyx_pf_3dnu_3DNu_10__setstate_cython__(CYTHON_UNUSED struct __pyx_obj_3dnu_DNu *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v___pyx_state); /* proto */
 static PyObject *__pyx_tp_new_3dnu_DNu(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_1;
-static PyObject *__pyx_int_neg_1;
 static PyObject *__pyx_slice_;
 static PyObject *__pyx_tuple__2;
 static PyObject *__pyx_tuple__3;
@@ -3850,7 +3849,7 @@ static PyArrayObject *__pyx_f_3dnu_3DNu_cell(struct __pyx_obj_3dnu_DNu *__pyx_v_
  * 		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
  * 
  * 		if cell_l > self.l:             # <<<<<<<<<<<<<<
- * 			return -1
+ * 			return None
  * 
  */
   __pyx_t_8 = ((__pyx_v_cell_l > __pyx_v_self->l) != 0);
@@ -3859,27 +3858,25 @@ static PyArrayObject *__pyx_f_3dnu_3DNu_cell(struct __pyx_obj_3dnu_DNu *__pyx_v_
     /* "dnu.pyx":121
  * 
  * 		if cell_l > self.l:
- * 			return -1             # <<<<<<<<<<<<<<
+ * 			return None             # <<<<<<<<<<<<<<
  * 
  * 		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))
  */
     __Pyx_XDECREF(((PyObject *)__pyx_r));
-    if (!(likely(__Pyx_TypeTest(__pyx_int_neg_1, __pyx_ptype_5numpy_ndarray)))) __PYX_ERR(0, 121, __pyx_L1_error)
-    __Pyx_INCREF(__pyx_int_neg_1);
-    __pyx_r = ((PyArrayObject *)__pyx_int_neg_1);
+    __pyx_r = ((PyArrayObject *)Py_None); __Pyx_INCREF(Py_None);
     goto __pyx_L0;
 
     /* "dnu.pyx":120
  * 		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
  * 
  * 		if cell_l > self.l:             # <<<<<<<<<<<<<<
- * 			return -1
+ * 			return None
  * 
  */
   }
 
   /* "dnu.pyx":123
- * 			return -1
+ * 			return None
  * 
  * 		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))             # <<<<<<<<<<<<<<
  * 		highest_cell = ((coords + 1) * pow(2, (-cell_l))) / pow(2, (-self.l)) - 1
@@ -5563,7 +5560,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 static CYTHON_SMALL_CODE int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __pyx_int_neg_1 = PyInt_FromLong(-1); if (unlikely(!__pyx_int_neg_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;

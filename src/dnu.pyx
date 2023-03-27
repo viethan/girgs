@@ -118,7 +118,7 @@ cdef class DNu:
 		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
 
 		if cell_l > self.l:
-			return -1
+			return None
 
 		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))
 		highest_cell = ((coords + 1) * pow(2, (-cell_l))) / pow(2, (-self.l)) - 1

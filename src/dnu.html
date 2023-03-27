@@ -1783,11 +1783,9 @@ static PyObject *__pyx_pf_3dnu_3DNu_6cell(struct __pyx_obj_3dnu_DNu *__pyx_v_sel
   if (__pyx_t_8) {
 /* … */
   }
-</pre><pre class="cython line score-4" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">121</span>: 			return -1</pre>
-<pre class='cython code score-4 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(((PyObject *)__pyx_r));
-    if (!(likely(<span class='pyx_c_api'>__Pyx_TypeTest</span>(__pyx_int_neg_1, __pyx_ptype_5numpy_ndarray)))) <span class='error_goto'>__PYX_ERR(0, 121, __pyx_L1_error)</span>
-    <span class='pyx_macro_api'>__Pyx_INCREF</span>(__pyx_int_neg_1);
-    __pyx_r = ((PyArrayObject *)__pyx_int_neg_1);
+</pre><pre class="cython line score-2" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">121</span>: 			return None</pre>
+<pre class='cython code score-2 '>    <span class='pyx_macro_api'>__Pyx_XDECREF</span>(((PyObject *)__pyx_r));
+    __pyx_r = ((PyArrayObject *)Py_None); <span class='pyx_macro_api'>__Pyx_INCREF</span>(Py_None);
     goto __pyx_L0;
 </pre><pre class="cython line score-0">&#xA0;<span class="">122</span>: </pre>
 <pre class="cython line score-40" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">123</span>: 		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))</pre>
