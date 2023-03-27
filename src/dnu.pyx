@@ -27,12 +27,6 @@ cdef class DNu:
 		self.l = <int>floor(-(log2(nu) / self.d))
 		mu = pow(2, (-self.l * self.d))
 
-		print("nu: ", nu)
-		print("d: ", self.d)
-		print("l: ", self.l)
-		print("mu: ", mu)
-		print("")
-
 		# Determine geometric ordering of cells and initialize prefix_sums
 		n_cells = int(ceil(1 / mu))
 
@@ -46,12 +40,8 @@ cdef class DNu:
 			self.prefix_sums[cell_idx + 1] += 1
 
 		temp_prefix_sums[0] = self.prefix_sums[0]
-
-		print("Printing prefix sums")
-		print("idx 0:", self.prefix_sums[0])
 		for i in range(n_cells):
 			self.prefix_sums[i + 1] += self.prefix_sums[i]
-			print("idx " + str(i+1) + ":", self.prefix_sums[i+1])
 			temp_prefix_sums[i + 1] = self.prefix_sums[i+1]
 
 		# Initialize and fill A array
@@ -63,13 +53,9 @@ cdef class DNu:
 			self.A[k] = point
 			temp_prefix_sums[cell_idx] += 1
 
-		print("Printing A...")
-		for i in range(len(self.A)):
-			print(self.A[i]) 
-
 		free(temp_prefix_sums)
 
-	def _point_cell_index(self, np.ndarray[np.float64_t, ndim=1] coords):
+	cdef int _point_cell_index(self, np.ndarray[np.float64_t, ndim=1] coords):
 		cdef int index = 0
 		cdef int i, b
 		cdef int *cell = <int*>calloc(self.d, sizeof(int))
@@ -83,14 +69,10 @@ cdef class DNu:
 			for i in range(self.d-1, -1, -1):
 				index |= ((cell[i] >> b) & 1) << (b * self.d + (self.d-i-1))
 
-		print("point", coords)
-		print("cell idx it belongs to", index)
-		print("")
-
 		free(cell)
 		return index
 
-	def _cell_index(self, np.ndarray[np.float64_t, ndim=1] cell):
+	cdef int _cell_index(self, np.ndarray[np.float64_t, ndim=1] cell):
 		cdef int index = 0
 		cdef int i, b
 
@@ -101,25 +83,21 @@ cdef class DNu:
 
 		return index
 
-	def cell_size(self, np.ndarray[np.float64_t, ndim=1] coords, int cell_l):
+	cpdef int cell_size(self, np.ndarray[np.float64_t, ndim=1] coords, int cell_l):
 		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
 
 		if cell_l > self.l:
-			return None
+			return -1
 
 		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))
 		highest_cell = ((coords + 1) * pow(2, (-cell_l))) / pow(2, (-self.l)) - 1
 
 		cdef int lowest_idx = self._cell_index(lowest_cell)
 		cdef int highest_idx = self._cell_index(highest_cell)
-
-		print("coords", coords)
-		print("lowest_cell", lowest_cell, "lowest_idx", lowest_idx)
-		print("highest_cell", highest_cell, "highest_idx", highest_idx)
 
 		return self.prefix_sums[highest_idx + 1] - self.prefix_sums[lowest_idx]
 
-	def kth_point_in_cell(self, np.ndarray[np.float64_t, ndim=1] coords, int cell_l, int k):
+	cpdef np.ndarray[np.float64_t, ndim=1] kth_point_in_cell(self, np.ndarray[np.float64_t, ndim=1] coords, int cell_l, int k):
 		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
 
 		if cell_l > self.l:
@@ -130,12 +108,22 @@ cdef class DNu:
 
 		cdef int lowest_idx = self._cell_index(lowest_cell)
 		cdef int highest_idx = self._cell_index(highest_cell)
-
-		print("coords", coords)
-		print("lowest_cell", lowest_cell, "lowest_idx", lowest_idx)
-		print("highest_cell", highest_cell, "highest_idx", highest_idx)
 
 		if k < 0 or k >= (self.prefix_sums[highest_idx + 1] - self.prefix_sums[lowest_idx]):
 			return None
 
 		return self.A[self.prefix_sums[lowest_idx] + k]
+
+	cpdef np.ndarray[np.float64_t, ndim=2] cell(self, np.ndarray[np.float64_t, ndim=1] coords, int cell_l):
+		cdef np.ndarray[np.float64_t, ndim=1] lowest_cell, highest_cell
+
+		if cell_l > self.l:
+			return -1
+
+		lowest_cell = (coords * pow(2,(-cell_l))) / pow(2, (-self.l))
+		highest_cell = ((coords + 1) * pow(2, (-cell_l))) / pow(2, (-self.l)) - 1
+
+		cdef int lowest_idx = self._cell_index(lowest_cell)
+		cdef int highest_idx = self._cell_index(highest_cell)
+
+		return self.A[self.prefix_sums[lowest_idx]:self.prefix_sums[highest_idx + 1]]

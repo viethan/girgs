@@ -1,5 +1,6 @@
 import math
 from decimal import *
+import itertools
 
 def roundUpCellVolume(x, d):
 	x = x ** (-1)
@@ -57,10 +58,23 @@ def getCells(l, d):
 		print(cell, i)
 		cells[tuple(cell)] = i
 
-	#return cells
+	return cells
 
 
 
+def get_cells(level, torus_dimension):
+    # Determine the number of cells along one dimension at the given level
+    num_cells_per_dim = 2 ** level
+
+    # Initialize an empty list to store the cells
+    cells = []
+
+    # Generate all cell coordinates in a torus_dimension-dimensional grid
+    for index in itertools.product(range(num_cells_per_dim), repeat=torus_dimension):
+        cell = tuple(index)
+        cells.append(cell)
+
+    return cells
 
 
 
@@ -103,6 +117,26 @@ def getChildren(node, l, d):
 
 	#print()
 	return children_cells
+
+
+def get_children(cell, dimension):
+    children = []
+    for offset in itertools.product(range(2), repeat=dimension):
+        child = tuple(2 * coord + offset_coord for coord, offset_coord in zip(cell, offset))
+        children.append(child)
+    return children
+
+def get_neighbors(cell, level, dimension):
+    neighbors = []
+    for offset in itertools.product(range(-1, 2), repeat=dimension):
+        if offset == tuple([0] * dimension):
+            continue
+        neighbor = tuple((coord + offset_coord) % (2 ** level)
+                         for coord, offset_coord in zip(cell, offset))
+        neighbors.append(neighbor)
+    return neighbors
+
+
 
 def getNeighbours(c, l, d, i, comb, neighbours):
 	if i == len(c):
