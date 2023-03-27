@@ -58,7 +58,7 @@ def visualize_torus_graph(g, vertex_positions, R, r):
 
 
 
-N = 10000
+N = 100000
 alpha = 8
 beta = 2.8
 d = 2
