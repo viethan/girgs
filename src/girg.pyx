@@ -13,7 +13,7 @@ cdef long double dist_torus_points(np.ndarray[np.float64_t, ndim=1] x_u, np.ndar
     maximum = 0.0
 
     for i in range(d):
-        dist = min(abs(x_u[i] - x_v[i]), 1)
+        dist = min(abs(x_u[i] - x_v[i]), 1 - abs(x_u[i] - x_v[i]))
         maximum = max(maximum, dist)
 
     return maximum

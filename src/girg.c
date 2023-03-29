@@ -2040,9 +2040,9 @@ static long double __pyx_f_4girg_dist_torus_points(PyArrayObject *__pyx_v_x_u, P
   int __pyx_t_1;
   int __pyx_t_2;
   int __pyx_t_3;
-  long __pyx_t_4;
+  Py_ssize_t __pyx_t_4;
   Py_ssize_t __pyx_t_5;
-  Py_ssize_t __pyx_t_6;
+  double __pyx_t_6;
   double __pyx_t_7;
   double __pyx_t_8;
   long double __pyx_t_9;
@@ -2084,7 +2084,7 @@ static long double __pyx_f_4girg_dist_torus_points(PyArrayObject *__pyx_v_x_u, P
  *     maximum = 0.0
  * 
  *     for i in range(d):             # <<<<<<<<<<<<<<
- *         dist = min(abs(x_u[i] - x_v[i]), 1)
+ *         dist = min(abs(x_u[i] - x_v[i]), 1 - abs(x_u[i] - x_v[i]))
  *         maximum = max(maximum, dist)
  */
   __pyx_t_1 = __pyx_v_d;
@@ -2095,18 +2095,22 @@ static long double __pyx_f_4girg_dist_torus_points(PyArrayObject *__pyx_v_x_u, P
     /* "girg.pyx":16
  * 
  *     for i in range(d):
- *         dist = min(abs(x_u[i] - x_v[i]), 1)             # <<<<<<<<<<<<<<
+ *         dist = min(abs(x_u[i] - x_v[i]), 1 - abs(x_u[i] - x_v[i]))             # <<<<<<<<<<<<<<
  *         maximum = max(maximum, dist)
  * 
  */
-    __pyx_t_4 = 1;
+    __pyx_t_4 = __pyx_v_i;
+    if (__pyx_t_4 < 0) __pyx_t_4 += __pyx_pybuffernd_x_u.diminfo[0].shape;
+    __pyx_t_5 = __pyx_v_i;
+    if (__pyx_t_5 < 0) __pyx_t_5 += __pyx_pybuffernd_x_v.diminfo[0].shape;
+    __pyx_t_6 = (1.0 - fabs(((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_u.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_x_u.diminfo[0].strides)) - (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_v.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_x_v.diminfo[0].strides)))));
     __pyx_t_5 = __pyx_v_i;
     if (__pyx_t_5 < 0) __pyx_t_5 += __pyx_pybuffernd_x_u.diminfo[0].shape;
-    __pyx_t_6 = __pyx_v_i;
-    if (__pyx_t_6 < 0) __pyx_t_6 += __pyx_pybuffernd_x_v.diminfo[0].shape;
-    __pyx_t_7 = fabs(((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_u.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_x_u.diminfo[0].strides)) - (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_v.rcbuffer->pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_x_v.diminfo[0].strides))));
-    if (((__pyx_t_4 < __pyx_t_7) != 0)) {
-      __pyx_t_8 = __pyx_t_4;
+    __pyx_t_4 = __pyx_v_i;
+    if (__pyx_t_4 < 0) __pyx_t_4 += __pyx_pybuffernd_x_v.diminfo[0].shape;
+    __pyx_t_7 = fabs(((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_u.rcbuffer->pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_x_u.diminfo[0].strides)) - (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_v.rcbuffer->pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_x_v.diminfo[0].strides))));
+    if (((__pyx_t_6 < __pyx_t_7) != 0)) {
+      __pyx_t_8 = __pyx_t_6;
     } else {
       __pyx_t_8 = __pyx_t_7;
     }
@@ -2114,7 +2118,7 @@ static long double __pyx_f_4girg_dist_torus_points(PyArrayObject *__pyx_v_x_u, P
 
     /* "girg.pyx":17
  *     for i in range(d):
- *         dist = min(abs(x_u[i] - x_v[i]), 1)
+ *         dist = min(abs(x_u[i] - x_v[i]), 1 - abs(x_u[i] - x_v[i]))
  *         maximum = max(maximum, dist)             # <<<<<<<<<<<<<<
  * 
  *     return maximum

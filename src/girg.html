@@ -393,15 +393,19 @@ body.cython { font-family: courier; font-size: 12; }
   __pyx_t_2 = __pyx_t_1;
   for (__pyx_t_3 = 0; __pyx_t_3 &lt; __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_i = __pyx_t_3;
-</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">016</span>:         dist = min(abs(x_u[i] - x_v[i]), 1)</pre>
-<pre class='cython code score-0 '>    __pyx_t_4 = 1;
+</pre><pre class="cython line score-0" onclick="(function(s){s.display=s.display==='block'?'none':'block'})(this.nextElementSibling.style)">+<span class="">016</span>:         dist = min(abs(x_u[i] - x_v[i]), 1 - abs(x_u[i] - x_v[i]))</pre>
+<pre class='cython code score-0 '>    __pyx_t_4 = __pyx_v_i;
+    if (__pyx_t_4 &lt; 0) __pyx_t_4 += __pyx_pybuffernd_x_u.diminfo[0].shape;
+    __pyx_t_5 = __pyx_v_i;
+    if (__pyx_t_5 &lt; 0) __pyx_t_5 += __pyx_pybuffernd_x_v.diminfo[0].shape;
+    __pyx_t_6 = (1.0 - fabs(((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_u.rcbuffer-&gt;pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_x_u.diminfo[0].strides)) - (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_v.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_x_v.diminfo[0].strides)))));
     __pyx_t_5 = __pyx_v_i;
     if (__pyx_t_5 &lt; 0) __pyx_t_5 += __pyx_pybuffernd_x_u.diminfo[0].shape;
-    __pyx_t_6 = __pyx_v_i;
-    if (__pyx_t_6 &lt; 0) __pyx_t_6 += __pyx_pybuffernd_x_v.diminfo[0].shape;
-    __pyx_t_7 = fabs(((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_u.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_x_u.diminfo[0].strides)) - (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_v.rcbuffer-&gt;pybuffer.buf, __pyx_t_6, __pyx_pybuffernd_x_v.diminfo[0].strides))));
-    if (((__pyx_t_4 &lt; __pyx_t_7) != 0)) {
-      __pyx_t_8 = __pyx_t_4;
+    __pyx_t_4 = __pyx_v_i;
+    if (__pyx_t_4 &lt; 0) __pyx_t_4 += __pyx_pybuffernd_x_v.diminfo[0].shape;
+    __pyx_t_7 = fabs(((*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_u.rcbuffer-&gt;pybuffer.buf, __pyx_t_5, __pyx_pybuffernd_x_u.diminfo[0].strides)) - (*__Pyx_BufPtrStrided1d(__pyx_t_5numpy_float64_t *, __pyx_pybuffernd_x_v.rcbuffer-&gt;pybuffer.buf, __pyx_t_4, __pyx_pybuffernd_x_v.diminfo[0].strides))));
+    if (((__pyx_t_6 &lt; __pyx_t_7) != 0)) {
+      __pyx_t_8 = __pyx_t_6;
     } else {
       __pyx_t_8 = __pyx_t_7;
     }
