@@ -2,3 +2,4 @@
 *.c
 *.html
 build
+__pycache__
