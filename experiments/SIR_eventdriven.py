@@ -1,8 +1,15 @@
+import sys
+from pathlib import Path
+
+parent_dir = str(Path(__file__).resolve().parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from src import girg
 import graph_tool.all as gt
 from queue import PriorityQueue
 import matplotlib.pyplot as plt
 import numpy as np
-import girg
 from networkx.utils.random_sequence import powerlaw_sequence
 
 def fast_SIR(G, τ, γ, initial_infecteds, t_max):
