@@ -1,7 +1,13 @@
 import sys
-sys.path.insert(0, '../src/girg.cpython-310-x86_64-linux-gnu.so')
+from pathlib import Path
 
-import girg
+parent_dir = str(Path(__file__).resolve().parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from src import girg
+
+
 import numpy as np
 from graph_tool.all import *
 from networkx.utils.random_sequence import powerlaw_sequence
@@ -11,16 +17,18 @@ import matplotlib.pyplot as plt
 def generate_weights(n, exponent, min_weight):
     weights = powerlaw_sequence(n, exponent)
     weights = np.array(weights)  # Convert to numpy array for easier manipulation
-    weights = weights - np.min(weights) + min_weight  # Shift weights to satisfy the minimum weight constraint
+
+    if min_weight != 1:
+        weights = weights - np.min(weights) + min_weight  # Shift weights to satisfy the minimum weight constraint
     return weights
 
 N = 10000
-alpha = 3
-beta = 2.5
+alpha = 8
+beta = 2.2
 d = 2
 c = 2
 
-v_weights = generate_weights(N, beta, 3)
+v_weights = generate_weights(N, beta, 1)
 edges, coords = girg.sample_graph(v_weights, alpha, d, c)
 
 g = Graph(directed=False)
