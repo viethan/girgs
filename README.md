@@ -1,5 +1,12 @@
 # girgs
 
+![Model](https://github.com/viethan/girgs/blob/main/img/for_readme/image0.png)
+![Model](https://github.com/viethan/girgs/blob/main/img/for_readme/image1.png)
+
+The development of this project has influenced by the 2017 paper "Sampling Geometric Inhomogeneous Random Graphs in Linear Time", by Karl Bringmann, Ralph Keusch and Johannes Lengler.
+
+Click [here](https://arxiv.org/abs/1511.00576) for the arXiv page.
+
 ## Creating the environment
 
 Notes:
