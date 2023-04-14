@@ -1,4 +1,11 @@
-from dnu import DNu
+import sys
+from pathlib import Path
+
+parent_dir = str(Path(__file__).resolve().parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from src import dnu
 import numpy as np
 
 def test_DNu():
@@ -13,7 +20,7 @@ def test_DNu():
     nu = 0.0625
 
     # Initialise the DNu data structure
-    d_nu = DNu(points, nu)
+    d_nu = dnu.DNu(points, nu)
 
     # Test cell_size
     cell_coords = np.array([3.0, 3.0])

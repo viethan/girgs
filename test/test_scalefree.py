@@ -1,4 +1,11 @@
-import girg
+import sys
+from pathlib import Path
+
+parent_dir = str(Path(__file__).resolve().parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from src import girg
 import numpy as np
 from graph_tool.all import *
 import matplotlib.pyplot as plt
@@ -50,7 +57,6 @@ def plot_median_degree_distribution_with_error_bars(n, alpha, beta, d, c):
     ax.set_ylabel('Median Frequency')
     ax.set_title('Median Degree Distribution with Error Bars')
     plt.show()
-
 
 
 N = 10000

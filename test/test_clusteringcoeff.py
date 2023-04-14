@@ -1,4 +1,11 @@
-import girg
+import sys
+from pathlib import Path
+
+parent_dir = str(Path(__file__).resolve().parent.parent)
+if parent_dir not in sys.path:
+    sys.path.append(parent_dir)
+
+from src import girg
 import numpy as np
 from graph_tool.all import *
 import matplotlib.pyplot as plt
@@ -12,7 +19,7 @@ def plot_clustering_coefficient_vs_vertices():
     tau = 2.5
     alphas = [1.1, 1.5, 2, 3]
     colors = ['blue', 'orange', 'green', 'red']
-    vertex_counts = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600]
+    vertex_counts = [100, 200, 400, 800, 1600, 3200]
 
     fig, ax = plt.subplots()
     for alpha, color in zip(alphas, colors):

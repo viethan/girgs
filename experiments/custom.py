@@ -6,8 +6,6 @@ if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
 from src import girg
-
-
 import numpy as np
 from graph_tool.all import *
 from networkx.utils.random_sequence import powerlaw_sequence
