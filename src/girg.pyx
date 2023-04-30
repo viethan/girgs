@@ -1,11 +1,24 @@
 import cython
 import numpy as np
 cimport numpy as np
-from libc.math cimport log2, floor, pow, abs
+from libc.math cimport log2, log, exp, floor, pow, abs
 
 from dnu import DNu
 import pnu
 import weightlayers
+
+cdef long double p_uv_hrg(double x_u, double x_v, double w_u, double w_v, double R, double T_H):    
+    cdef long double d, p_H, r_v, phi_v, r_u, phi_u
+
+    r_v = R - 2 * log(w_v)
+    phi_v = 2 * 3.141592653589793 * x_v
+    r_u = R - 2 * log(w_u)
+    phi_u = 2 * 3.141592653589793 * x_u
+    d = np.cosh(r_u) * np.cosh(r_v) - np.sinh(r_u) * np.sinh(r_v) * np.cos(phi_u - phi_v)
+    d = np.arccosh(d)
+    p_H = 1 / (1 + exp((d - R) / (2 * T_H)))
+
+    return p_H
 
 @cython.boundscheck(False)
 cdef long double dist_torus_points(np.ndarray[np.float64_t, ndim=1] x_u, np.ndarray[np.float64_t, ndim=1] x_v, int d):
@@ -67,7 +80,7 @@ cdef long double bar_p(np.ndarray[np.float64_t, ndim=1] cell_A, np.ndarray[np.fl
 @cython.wraparound(False)
 @cython.nonecheck(False)
 @cython.cdivision(True)
-cpdef sample_graph(np.ndarray[np.float64_t, ndim=1] v_weights, double alpha, int d, double c):
+cpdef sample_graph(np.ndarray[np.float64_t, ndim=1] v_weights, double alpha, int d, double c, int hrg=0, double R=0, double T_H=0.0, np.ndarray v_coords=None):
     cdef int n
     cdef int L, level, highest_level, pair_type
     cdef long double nu, w_0, W, w_i, w_j
@@ -76,16 +89,21 @@ cpdef sample_graph(np.ndarray[np.float64_t, ndim=1] v_weights, double alpha, int
     cdef long long r, n_A, n_B, r_A, r_B, total_pairs
     cdef np.ndarray x_u, x_v, A, B
 
+
     E = set()
     coords_to_i = {}                                                        # !!!!!!!!!!!!
     partition_dic = {}
     n = v_weights.shape[0]
 
     # For each vertex, sample the positions
-    v_coords = np.ndarray(shape=(n,d), dtype='float64')
-    for i in range(n):
-        v_coords[i] = np.random.uniform(low=0.0, high=1.0, size=d)
-        coords_to_i[tuple(v_coords[i])] = i
+    if hrg == 0:
+        v_coords = np.ndarray(shape=(n,d), dtype='float64')
+        for i in range(n):
+            v_coords[i] = np.random.uniform(low=0.0, high=1.0, size=d)
+            coords_to_i[tuple(v_coords[i])] = i
+    else:
+        for i in range(n):
+            coords_to_i[tuple(v_coords[i])] = i
 
     # Determine weight layers V_i
     layers = weightlayers.split(v_weights)
@@ -141,7 +159,11 @@ cpdef sample_graph(np.ndarray[np.float64_t, ndim=1] v_weights, double alpha, int
                             if u == v:
                                 continue
 
-                            p_uv_val = p_uv(x_u, x_v, v_weights[u], v_weights[v], W, alpha, d)
+                            if hrg == 0:
+                                p_uv_val = p_uv(x_u, x_v, v_weights[u], v_weights[v], W, alpha, d)
+                            else:
+                                p_uv_val = p_uv_hrg(x_u[0], x_v[0], v_weights[u], v_weights[v], R, T_H)
+
                             if np.random.binomial(1, p_uv_val):
                                 if i != j or (i == j and u < v):
                                     E.add((u, v))
@@ -163,7 +185,11 @@ cpdef sample_graph(np.ndarray[np.float64_t, ndim=1] v_weights, double alpha, int
                         x_v = V_j_B[r_B]
                         u = coords_to_i[tuple(x_u)]
                         v = coords_to_i[tuple(x_v)]
-                        p_uv_val = p_uv(x_u, x_v, v_weights[u], v_weights[v], W, alpha, d)
+
+                        if hrg == 0:
+                            p_uv_val = p_uv(x_u, x_v, v_weights[u], v_weights[v], W, alpha, d)
+                        else:
+                            p_uv_val = p_uv_hrg(x_u[0], x_v[0], v_weights[u], v_weights[v], R, T_H)
 
                         if np.random.binomial(1, min(1, p_uv_val / bar_p_val)): # ?
                             if i != j or (i == j and u < v):

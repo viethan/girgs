@@ -10,7 +10,7 @@ import numpy as np
 import graph_tool.all as gt
 from networkx.utils.random_sequence import powerlaw_sequence
 import matplotlib.pyplot as plt
-
+import time
 
 def generate_weights(n, exponent, min_weight):
     weights = powerlaw_sequence(n, exponent)
@@ -20,26 +20,27 @@ def generate_weights(n, exponent, min_weight):
         weights = weights - np.min(weights) + min_weight  # Shift weights to satisfy the minimum weight constraint
     return weights
 
-N = 1000
+def sample_girg(n, alpha, beta, d, c):
+    v_weights = generate_weights(n, beta, 3)
+    edges, coords = girg.sample_graph(v_weights, alpha, d, c, hrg=0)
+
+    g = gt.Graph(directed=False)
+    g.add_vertex(n)
+
+    for u, v in edges:
+        g.add_edge(u, v)
+
+    return g, coords
+
+n = 100000
 alpha = 8
-beta = 2.3
+beta = 2.8
 d = 2
 c = 2
 
-v_weights = generate_weights(N, beta, 3)
-edges, coords = girg.sample_graph(v_weights, alpha, d, c)
-
-g = gt.Graph(directed=False)
-g.add_vertex(N)
-
-for u, v in edges:
-	g.add_edge(u, v)
-
-v_coords = g.new_vertex_property("vector<long double>")
-for i in range(N):
-	pos = [float(val) for val in coords[i]]
-	v_coords[i] = pos
-
+start_time = time.time()
+g, coords = sample_girg(n, alpha, beta, d, c)
+print("--- %s seconds ---" % (time.time() - start_time))
 
 # 1. Global clustering coefficient of the graph
 global_clustering_coeff = gt.global_clustering(g)[0]
@@ -65,5 +66,10 @@ print(f"Maximum degree: {max_degree}")
 print(f"Average distance in the giant component: {avg_distance_giant}")
 print(f"Diameter in the giant component: {diameter_giant}")
 
-gt.graph_draw(g, pos=v_coords, output="drawing.pdf")
+# Drawing graph
+v_coords = g.new_vertex_property("vector<long double>")
+for i in range(n):
+    pos = [float(val) for val in coords[i]]
+    v_coords[i] = pos
 
+gt.graph_draw(g, pos=v_coords, output="drawing.pdf")
