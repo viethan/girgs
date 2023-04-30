@@ -78,8 +78,10 @@ girgs
   - contains the output of `test_scalefree.py` and `test_clusteringcoeff.py`.
 
   Important notes:
-    - the visualisations are of graphs in 2D
-    - the papers specifies that the ground space used is a torus, meaning that it is possible to wrap around. In order to not make our visualisations messy, we slightly altered `girg.pyx` in order to provide clearer representations
+   - the visualisations are of graphs in 2D
+    
+   - the papers specifies that the ground space used is a torus, meaning that it is possible to wrap around. In order to not make our visualisations messy, we slightly altered `girg.pyx` in order to provide clearer representations
+    
 
 ```python
 @cython.boundscheck(False)
