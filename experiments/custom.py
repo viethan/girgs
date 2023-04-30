@@ -7,29 +7,29 @@ if parent_dir not in sys.path:
 
 from src import girg
 import numpy as np
-from graph_tool.all import *
+import graph_tool.all as gt
 from networkx.utils.random_sequence import powerlaw_sequence
 import matplotlib.pyplot as plt
 
 
 def generate_weights(n, exponent, min_weight):
     weights = powerlaw_sequence(n, exponent)
-    weights = np.array(weights)  # Convert to numpy array for easier manipulation
+    weights = np.array(weights)
 
     if min_weight != 1:
         weights = weights - np.min(weights) + min_weight  # Shift weights to satisfy the minimum weight constraint
     return weights
 
-N = 10000
+N = 1000
 alpha = 8
-beta = 2.2
+beta = 2.3
 d = 2
 c = 2
 
-v_weights = generate_weights(N, beta, 1)
+v_weights = generate_weights(N, beta, 3)
 edges, coords = girg.sample_graph(v_weights, alpha, d, c)
 
-g = Graph(directed=False)
+g = gt.Graph(directed=False)
 g.add_vertex(N)
 
 for u, v in edges:
@@ -41,4 +41,29 @@ for i in range(N):
 	v_coords[i] = pos
 
 
-graph_draw(g, pos=v_coords, output="drawing.pdf")
+# 1. Global clustering coefficient of the graph
+global_clustering_coeff = gt.global_clustering(g)[0]
+
+# 2. Average degree of the graph
+avg_degree = sum(g.degree_property_map("total").a) / g.num_vertices()
+
+# 3. Maximum degree of the graph
+max_degree = max(g.degree_property_map("total").a)
+
+# 4. Average distance in the giant component
+giant_component = gt.extract_largest_component(g, directed=False)
+dist = gt.shortest_distance(giant_component)
+avg_distance_giant = sum([sum(i) for i in dist])/(giant_component.num_vertices()**2-giant_component.num_vertices())
+
+# 5. Diameter in the giant component
+diameter_giant = gt.pseudo_diameter(giant_component)[0]
+
+# Print results
+print(f"Global clustering coefficient: {global_clustering_coeff}")
+print(f"Average degree: {avg_degree}")
+print(f"Maximum degree: {max_degree}")
+print(f"Average distance in the giant component: {avg_distance_giant}")
+print(f"Diameter in the giant component: {diameter_giant}")
+
+gt.graph_draw(g, pos=v_coords, output="drawing.pdf")
+
