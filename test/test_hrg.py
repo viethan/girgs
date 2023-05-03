@@ -9,7 +9,6 @@ from src import girg
 import numpy as np
 import graph_tool.all as gt
 import matplotlib.pyplot as plt
-from scipy.stats import rv_continuous
 
 def plot_median_degree_distribution_with_error_bars(n, alpha_H, C_H, T_H):
     num_graphs = 23
@@ -72,10 +71,10 @@ def plot_clustering_coeff_and_avg_distance_giant_vs_vertices():
     T_Hs = [1/1.1, 1/1.6, 1/2, 1/4] # cc
     alpha_Hs = [(2.1 - 1) / 2, (2.3 - 1) / 2, (2.6 - 1) / 2, (2.9 - 1) / 2] # avg dist
     colours = ['red', 'orange', 'maroon', 'tan']
-    vertex_counts = [100, 200]#, 400, 800, 1600, 3200, 6400, 10000]
+    vertex_counts = [100, 200, 400, 800, 1600, 3200, 6400, 10000]
 
     plots1, plots2 = {}, {}
-    for i in range(len(vertex_counts)):
+    for i in range(len(alpha_Hs)):
         alpha_H = alpha_Hs[i]
         T_H = T_Hs[i]
         colour = colours[i]
@@ -148,5 +147,5 @@ alpha_H = (2.9 - 1) / 2
 C_H = 1
 T_H = 1/4
 
-plot_median_degree_distribution_with_error_bars(n, alpha_H, C_H, T_H)
-#plot_clustering_coeff_and_avg_distance_giant_vs_vertices()
+#plot_median_degree_distribution_with_error_bars(n, alpha_H, C_H, T_H)
+plot_clustering_coeff_and_avg_distance_giant_vs_vertices()
