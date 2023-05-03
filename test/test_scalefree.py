@@ -11,20 +11,13 @@ from graph_tool.all import *
 import matplotlib.pyplot as plt
 from networkx.utils.random_sequence import powerlaw_sequence
 
-def plot_median_degree_distribution_with_error_bars(n, alpha, beta, d, c):
+def plot_median_degree_distribution_with_error_bars(n, alpha, beta, d, c, min_weight):
     num_graphs = 23
     degree_frequencies = []
 
     max_degree = 0
     for _ in range(num_graphs):
-        v_weights = np.array(powerlaw_sequence(n, beta))
-        edges, coords = girg.sample_graph(v_weights, alpha, d, c)
-
-        g = Graph(directed=False)
-        g.add_vertex(n)
-
-        for u, v in edges:
-            g.add_edge(u, v)
+        g, coords = girg.sample_girg(n, alpha, beta, d, c, min_weight)
 
         # Calculate the degree distribution
         deg_freq = vertex_hist(g, "total")[0].tolist()
@@ -59,10 +52,11 @@ def plot_median_degree_distribution_with_error_bars(n, alpha, beta, d, c):
     plt.show()
 
 
-N = 10000
+N = 1000
 alpha = 2.3
 beta = 2.8
 d = 2
 c = 2
+min_weight = 3
 
-plot_median_degree_distribution_with_error_bars(N, alpha, beta, d, c) 
+plot_median_degree_distribution_with_error_bars(N, alpha, beta, d, c, min_weight) 

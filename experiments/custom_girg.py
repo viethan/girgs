@@ -6,40 +6,18 @@ if parent_dir not in sys.path:
     sys.path.append(parent_dir)
 
 from src import girg
-import numpy as np
 import graph_tool.all as gt
-from networkx.utils.random_sequence import powerlaw_sequence
-import matplotlib.pyplot as plt
 import time
 
-def generate_weights(n, exponent, min_weight):
-    weights = powerlaw_sequence(n, exponent)
-    weights = np.array(weights)
-
-    if min_weight != 1:
-        weights = weights - np.min(weights) + min_weight  # Shift weights to satisfy the minimum weight constraint
-    return weights
-
-def sample_girg(n, alpha, beta, d, c):
-    v_weights = generate_weights(n, beta, 3)
-    edges, coords = girg.sample_graph(v_weights, alpha, d, c, hrg=0)
-
-    g = gt.Graph(directed=False)
-    g.add_vertex(n)
-
-    for u, v in edges:
-        g.add_edge(u, v)
-
-    return g, coords
-
-n = 100000
+n = 10000
 alpha = 8
 beta = 2.8
 d = 2
-c = 2
+c = 1
+min_weigth = 3
 
 start_time = time.time()
-g, coords = sample_girg(n, alpha, beta, d, c)
+g, coords = girg.sample_girg(n, alpha, beta, d, c, min_weigth)
 print("--- %s seconds ---" % (time.time() - start_time))
 
 # 1. Global clustering coefficient of the graph

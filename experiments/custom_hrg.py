@@ -8,54 +8,22 @@ if parent_dir not in sys.path:
 from src import girg
 import numpy as np
 import graph_tool.all as gt
-from scipy.stats import rv_continuous
+import time
 
-class HyperbolicDistribution(rv_continuous):
-    def __init__(self, alpha_H, R):
-        super().__init__()
-        self.alpha_H = alpha_H
-        self.R = R
+def convert_number_to_circle_coordinates(number, radius=1):
+    angle_rad = number * 2 * np.pi
+    x = radius * np.cos(angle_rad)
+    y = radius * np.sin(angle_rad)
+    return (x, y)
 
-    def _pdf(self, r):
-        return self.alpha_H * np.sinh(self.alpha_H * r) / (np.cosh(self.alpha_H * self.R) - 1)
-
-    def _get_support(self):
-        return 0, self.R
-
-def sample_hrg(n, alpha_H, C_H, T_H):
-    # sampling random polar coordinates
-
-    R = 2 * np.log(n) + C_H
-    hyperbolic_dist = HyperbolicDistribution(alpha_H, R)
-    r_coords = hyperbolic_dist.rvs(size=n)
-    phi_coords = np.random.uniform(0, 2 * np.pi, size=n)
-
-    # perform embedding
-    d = 1
-    beta = 2 * alpha_H + 1
-    alpha = 1 / T_H
-    v_weights = np.zeros(n, dtype='float64')
-    v_coords = np.ndarray(shape=(n,d), dtype='float64')
-    for i in range(n):
-        v_weights[i] = np.exp((R - r_coords[i]) / 2)
-        v_coords[i] = np.array([phi_coords[i] / (2 * np.pi)])
-
-    # use girg sampler
-    edges, coords = girg.sample_graph(v_weights, alpha, d, 1, hrg=1, R=R, T_H=T_H, v_coords=v_coords)
-    g = gt.Graph(directed=False)
-    g.add_vertex(n)
-
-    for u, v in edges:
-        g.add_edge(u, v)
-
-    return g, coords
-
-n = 1000
-alpha_H = 1
+n = 10000
+alpha_H = (2.9 - 1) / 2
 C_H = 1
-T_H = 0.5
+T_H = 1/4
 
-g, coords = sample_hrg(n, alpha_H, C_H, T_H)
+start_time = time.time()
+g, coords = girg.sample_hrg(n, alpha_H, C_H, T_H)
+print("--- %s seconds ---" % (time.time() - start_time))
 
 # 1. Global clustering coefficient of the graph
 global_clustering_coeff = gt.global_clustering(g)[0]
@@ -85,6 +53,18 @@ print(f"Diameter in the giant component: {diameter_giant}")
 v_coords = g.new_vertex_property("vector<long double>")
 for i in range(n):
     pos = [float(val) for val in coords[i]]
-    v_coords[i] = pos
+    x, y = convert_number_to_circle_coordinates(pos[0])
+    v_coords[i] = [x, y]
 
-gt.graph_draw(g, pos=v_coords, output="drawing.pdf")
+degrees = g.get_total_degrees(g.get_vertices())
+normalised_degrees = degrees / np.max(degrees)
+base_size = 10
+vertex_sizes = base_size * (1 + normalised_degrees)
+size_map = g.new_vertex_property("double", vals=vertex_sizes)
+
+base_colour = np.array([1.0, 0.0, 0.0])
+vertex_colours = np.outer(1 - normalised_degrees, base_colour)
+vertex_colours = np.insert(vertex_colours, 3, 1, axis=1)  # Add an alpha channel
+colour_map = g.new_vertex_property("vector<double>", vals=vertex_colours)
+
+gt.graph_draw(g, pos=v_coords, vertex_size=size_map, vertex_fill_color=colour_map, output="drawing.pdf")

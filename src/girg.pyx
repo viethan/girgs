@@ -1,11 +1,14 @@
 import cython
 import numpy as np
+from scipy.stats import rv_continuous
 cimport numpy as np
 from libc.math cimport log2, log, exp, floor, pow, abs
 
 from dnu import DNu
 import pnu
 import weightlayers
+import graph_tool.all as gt
+from networkx.utils.random_sequence import powerlaw_sequence
 
 cdef long double p_uv_hrg(double x_u, double x_v, double w_u, double w_v, double R, double T_H):    
     cdef long double d, p_H, r_v, phi_v, r_u, phi_u
@@ -26,7 +29,7 @@ cdef long double dist_torus_points(np.ndarray[np.float64_t, ndim=1] x_u, np.ndar
     maximum = 0.0
 
     for i in range(d):
-        dist = min(abs(x_u[i] - x_v[i]), 1 - abs(x_u[i] - x_v[i]))
+        dist = min(abs(x_u[i] - x_v[i]), 1)# - abs(x_u[i] - x_v[i]))
         maximum = max(maximum, dist)
 
     return maximum
@@ -71,10 +74,10 @@ cdef long double p_uv(np.ndarray[np.float64_t, ndim=1] x_u, np.ndarray[np.float6
     return min(1, pow(pow((1 / dist), d) * ((w_u * w_v) / W), alpha))
 
 @cython.cdivision(True)
-cdef long double bar_p(np.ndarray[np.float64_t, ndim=1] cell_A, np.ndarray[np.float64_t, ndim=1] cell_B, double w_i, double w_j, double W, double alpha, int level, int d):
+cdef long double bar_p(np.ndarray[np.float64_t, ndim=1] cell_A, np.ndarray[np.float64_t, ndim=1] cell_B, double w_i, double w_j, double W, double alpha, int level, int d, double c):
     cdef long double dist = dist_torus_cells(cell_A, cell_B, level, d)
 
-    return min(1, pow(pow((1 / dist), d) * ((w_i * w_j) / W), alpha))
+    return min(1, c * pow(pow((1 / dist), d) * ((w_i * w_j) / W), alpha))
 
 @cython.boundscheck(False)
 @cython.wraparound(False)
@@ -171,7 +174,7 @@ cpdef sample_graph(np.ndarray[np.float64_t, ndim=1] v_weights, double alpha, int
                 # Type II
                 else: 
 
-                    bar_p_val = bar_p(A, B, w_i, w_j, W, alpha, level, d)
+                    bar_p_val = bar_p(A, B, w_i, w_j, W, alpha, level, d, c)
                     r = np.random.geometric(bar_p_val)
                     n_A = V_i_A.shape[0]
                     n_B = V_j_B.shape[0]
@@ -199,3 +202,63 @@ cpdef sample_graph(np.ndarray[np.float64_t, ndim=1] v_weights, double alpha, int
 
 
     return E, v_coords
+
+def generate_weights(n, exponent, min_weight):
+    weights = powerlaw_sequence(n, exponent)
+    weights = np.array(weights)
+
+    if min_weight != 1:
+        weights = weights - np.min(weights) + min_weight  # Shift weights to satisfy the minimum weight constraint
+    return weights
+
+class HyperbolicDistribution(rv_continuous):
+    def __init__(self, alpha_H, R):
+        super().__init__()
+        self.alpha_H = alpha_H
+        self.R = R
+
+    def _pdf(self, r):
+        return self.alpha_H * np.sinh(self.alpha_H * r) / (np.cosh(self.alpha_H * self.R) - 1)
+
+    def _get_support(self):
+        return 0, self.R
+
+def sample_girg(n, alpha, beta, d, c, min_weight):
+    v_weights = generate_weights(n, beta, min_weight)
+    edges, coords = sample_graph(v_weights, alpha, d, c, hrg=0)
+
+    g = gt.Graph(directed=False)
+    g.add_vertex(n)
+
+    for u, v in edges:
+        g.add_edge(u, v)
+
+    return g, coords
+
+def sample_hrg(n, alpha_H, C_H, T_H):
+    # sampling random polar coordinates
+
+    R = 2 * np.log(n) + C_H
+    hyperbolic_dist = HyperbolicDistribution(alpha_H, R)
+    r_coords = hyperbolic_dist.rvs(size=n)
+    phi_coords = np.random.uniform(0, 2 * np.pi, size=n)
+
+    # perform embedding
+    d = 1
+    beta = 2 * alpha_H + 1
+    alpha = 1 / T_H
+    v_weights = np.zeros(n, dtype='float64')
+    v_coords = np.ndarray(shape=(n,d), dtype='float64')
+    for i in range(n):
+        v_weights[i] = np.exp((R - r_coords[i]) / 2)
+        v_coords[i] = np.array([phi_coords[i] / (2 * np.pi)])
+
+    # use girg sampler
+    edges, coords = sample_graph(v_weights, alpha, d, 1, hrg=1, R=R, T_H=T_H, v_coords=v_coords)
+    g = gt.Graph(directed=False)
+    g.add_vertex(n)
+
+    for u, v in edges:
+        g.add_edge(u, v)
+
+    return g, coords

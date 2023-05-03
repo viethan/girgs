@@ -12,17 +12,22 @@ import matplotlib.pyplot as plt
 from networkx.utils.random_sequence import powerlaw_sequence
 
 def compute_clustering_coefficient(g):
-    clustering_coefficient = global_clustering(g)
-    return clustering_coefficient[0]
+    clustering_coefficient = local_clustering(g)
+
+    sumo = 0
+    for i in range(g.num_vertices()):
+        sumo += clustering_coefficient[i]
+
+    return sumo / g.num_vertices()
 
 def plot_clustering_coefficient_vs_vertices():
     tau = 2.5
-    alphas = [1.1, 1.5, 2, 3]
-    colors = ['blue', 'orange', 'green', 'red']
-    vertex_counts = [100, 200, 400, 800, 1600, 3200]
+    alphas = [1.1, 1.6, 2, 4]
+    colours = ['red', 'orange', 'maroon', 'tan']
+    vertex_counts = [100, 200, 400, 800, 1600, 3200, 6400, 10000]
 
-    fig, ax = plt.subplots()
-    for alpha, color in zip(alphas, colors):
+    plots = {}
+    for alpha, colour in zip(alphas, colours):
         medians = []
         q1_vals = []
         q3_vals = []
@@ -30,14 +35,7 @@ def plot_clustering_coefficient_vs_vertices():
         for n in vertex_counts:
             clustering_coefficients = []
             for _ in range(23):
-                v_weights = np.array(powerlaw_sequence(n, tau))
-                edges, coords = girg.sample_graph(v_weights, alpha, 2, 2)
-
-                g = Graph(directed=False)
-                g.add_vertex(n)
-
-                for u, v in edges:
-                    g.add_edge(u, v)
+                g, coords = girg.sample_girg(n, alpha, tau, 2, 2, 3)
 
                 clustering_coefficient = compute_clustering_coefficient(g)
                 clustering_coefficients.append(clustering_coefficient)
@@ -49,13 +47,25 @@ def plot_clustering_coefficient_vs_vertices():
             q1_vals.append(q1)
             q3_vals.append(q3)
 
-        ax.errorbar(vertex_counts, medians, yerr=[np.array(medians) - np.array(q1_vals), np.array(q3_vals) - np.array(medians)], fmt="o-", capsize=5, label=f"alpha={alpha}", color=color)
+        plots[(alpha, colour)] = [vertex_counts, medians, q1_vals, q3_vals]
 
-    ax.set_xscale("log")
+        
+    for (alpha, colour) in plots.keys():
+        fig, ax = plt.subplots()
+        ax.errorbar(plots[(alpha, colour)][0], plots[(alpha, colour)][1], yerr=[np.array(plots[(alpha, colour)][1]) - np.array(plots[(alpha, colour)][2]), np.array(plots[(alpha, colour)][3]) - np.array(plots[(alpha, colour)][1])], fmt="o-", capsize=5, label=f"alpha={alpha}", color=colour)
+
+        ax.set_xlabel("Number of vertices (n)")
+        ax.set_ylabel("Avg Clustering Coefficient")
+        ax.legend()
+        plt.show()
+
+    fig, ax = plt.subplots()
+    for (alpha, colour) in plots.keys():
+        ax.errorbar(plots[(alpha, colour)][0], plots[(alpha, colour)][1], yerr=[np.array(plots[(alpha, colour)][1]) - np.array(plots[(alpha, colour)][2]), np.array(plots[(alpha, colour)][3]) - np.array(plots[(alpha, colour)][1])], fmt="o-", capsize=5, label=f"alpha={alpha}", color=colour)
+
     ax.set_xlabel("Number of vertices (n)")
-    ax.set_ylabel("Clustering coefficient")
+    ax.set_ylabel("Avg Clustering Coefficient")
     ax.legend()
-    plt.title("Clustering coefficient vs number of vertices for different alpha values")
     plt.show()
 
 

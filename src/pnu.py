@@ -22,15 +22,15 @@ def get_children(cell, dimension):
         children.append(child)
     return children
 
-def get_neighbors(cell, level, dimension):
-    neighbors = []
+def get_neighbours(cell, level, dimension):
+    neighbours = []
     for offset in itertools.product(range(-1, 2), repeat=dimension):
         if offset == tuple([0] * dimension):
             continue
-        neighbor = tuple((coord + offset_coord) % (2 ** level)
+        neighbour = tuple((coord + offset_coord) % (2 ** level)
                          for coord, offset_coord in zip(cell, offset))
-        neighbors.append(neighbor)
-    return neighbors
+        neighbours.append(neighbour)
+    return neighbours
 
 def partition_torus(nu, torus_dimension):
     highest_level = math.floor(-(math.log2(nu) / torus_dimension))
@@ -43,13 +43,13 @@ def partition_torus(nu, torus_dimension):
     for level in range(1, highest_level + 1):
         cells = get_cells(level, torus_dimension)
         for A in cells:
-            neighbors = get_neighbors(A, level, torus_dimension)
+            neighbours = get_neighbours(A, level, torus_dimension)
 
             if level == highest_level:
                 # Include the cell itself for type I pairs
                 cell_pairs.add(((A, A), level, 1))
 
-            for B in neighbors:
+            for B in neighbours:
                 if level == highest_level:
                     # Type I
                     cell_pairs.add(((A, B), level, 1))
@@ -58,14 +58,14 @@ def partition_torus(nu, torus_dimension):
                     A_children = get_children(A, torus_dimension)
                     B_children = get_children(B, torus_dimension)
 
-                    A_child_neighbors = {
-                        child_A: get_neighbors(child_A, level + 1, torus_dimension)
+                    A_child_neighbours = {
+                        child_A: get_neighbours(child_A, level + 1, torus_dimension)
                         for child_A in A_children
                     }
 
                     for child_A in A_children:
                         for child_B in B_children:
-                            if child_B not in A_child_neighbors[child_A]:
+                            if child_B not in A_child_neighbours[child_A]:
                                 cell_pairs.add(((child_A, child_B), level + 1, 2))
 
     return cell_pairs

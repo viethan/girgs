@@ -10,7 +10,6 @@ import graph_tool.all as gt
 from queue import PriorityQueue
 import matplotlib.pyplot as plt
 import numpy as np
-from networkx.utils.random_sequence import powerlaw_sequence
 
 def fast_SIR(G, τ, γ, initial_infecteds, t_max):
     times, S, I, R = [0], [G.num_vertices()], [0], [0]
@@ -92,7 +91,6 @@ def plot_SIR(times, S, I, R):
     plt.grid()
     plt.show()
 
-
 def plot_infected_proportion(times, I, total_population):
     infected_proportion = [i / total_population for i in I]
 
@@ -105,35 +103,27 @@ def plot_infected_proportion(times, I, total_population):
     plt.grid()
     plt.show()
 
-
-n = 1000
-alpha = 2.3
-beta = 2.8
+n = 10000
+alpha = 8
+beta = 2.
 d = 2
-c = 2
+c = 1
+min_weigth = 3
 
-v_weights = np.array(powerlaw_sequence(n, beta))
-edges, coords = girg.sample_graph(v_weights, alpha, d, c)
+g, _ = girg.sample_girg(n, alpha, beta, d, c, min_weigth)
 
-G = gt.Graph(directed=False)
-G.add_vertex(n)
-
-for u, v in edges:
-    G.add_edge(u, v)
-
-
-# Set 20% of nodes as initially infected, selected randomly
-initial_infection_rate = 0.2
+# Set 1% of nodes as initially infected, selected randomly
+initial_infection_rate = 0.01
 initial_infected_count = int(n * initial_infection_rate)
-initial_infecteds = np.random.choice(G.get_vertices(), initial_infected_count, replace=False)
+initial_infecteds = np.random.choice(g.get_vertices(), initial_infected_count, replace=False)
 
 # Set parameters and run the simulation
-τ = 0.1
-γ = 0.05
-t_max = 100
+τ = 0.5
+γ = 0.4
+t_max = 200
 
-times, S, I, R = fast_SIR(G, τ, γ, initial_infecteds, t_max)
+times, S, I, R = fast_SIR(g, τ, γ, initial_infecteds, t_max)
 
 # Plot the results
 plot_SIR(times, S, I, R)
-plot_infected_proportion(times, I, G.num_vertices())
+plot_infected_proportion(times, I, n)
