@@ -16,7 +16,7 @@ def plot_scaling():
     betas = [2.1, 2.3, 2.6, 2.9]
     alphas = [1.1, 1.6, 2, 4]
     colours = ['red', 'orange', 'maroon', 'tan']
-    vertex_counts = [100, 200, 400, 800, 1600, 3200, 6400, 12800, 25600, 51200, 102400, 204800, 500000]
+    vertex_counts = [1000, 2500, 5000, 10000, 25000, 50000, 100000, 250000, 500000, 1000000]
 
     idx = 0
     plots1, plots2 = {}, {}
@@ -34,7 +34,7 @@ def plot_scaling():
             scalings2 = []
 
             t1, t2 = 0, 0
-            for _ in range(23):
+            for _ in range(1):
                 while True:
                     try:
                         start_time = time.time()
@@ -62,39 +62,43 @@ def plot_scaling():
                 scalings2.append(t2)
 
             median = np.median(scalings1)
-            q1 = np.percentile(scalings1, 25)
-            q3 = np.percentile(scalings1, 75)
+            # q1 = np.percentile(scalings1, 25)
+            # q3 = np.percentile(scalings1, 75)
             medians1.append(median)
-            q1_vals1.append(q1)
-            q3_vals1.append(q3)
+            # q1_vals1.append(q1)
+            # q3_vals1.append(q3)
 
             median = np.median(scalings2)
-            q1 = np.percentile(scalings2, 25)
-            q3 = np.percentile(scalings2, 75)
+            # q1 = np.percentile(scalings2, 25)
+            # q3 = np.percentile(scalings2, 75)
             medians2.append(median)
-            q1_vals2.append(q1)
-            q3_vals2.append(q3)
+            # q1_vals2.append(q1)
+            # q3_vals2.append(q3)
 
-        plots1[(alpha, colour)] = [vertex_counts, medians1, q1_vals1, q3_vals1]
-        plots2[(beta, colour)] = [vertex_counts, medians2, q1_vals2, q3_vals2]
+        plots1[(alpha, colour)] = [vertex_counts, medians1]#, q1_vals1, q3_vals1]
+        plots2[(beta, colour)] = [vertex_counts, medians2]#, q1_vals2, q3_vals2]
 
 
-    fig, ax = plt.subplots()
+    plt.figure(figsize=(10, 6))
     for (alpha, colour) in plots1.keys():
-        ax.errorbar(plots1[(alpha, colour)][0], plots1[(alpha, colour)][1], yerr=[np.array(plots1[(alpha, colour)][1]) - np.array(plots1[(alpha, colour)][2]), np.array(plots1[(alpha, colour)][3]) - np.array(plots1[(alpha, colour)][1])], fmt="o-", capsize=5, label=f"alpha={alpha:.1f}", color=colour)
+        #ax.errorbar(plots1[(alpha, colour)][0], plots1[(alpha, colour)][1], yerr=[np.array(plots1[(alpha, colour)][1]) - np.array(plots1[(alpha, colour)][2]), np.array(plots1[(alpha, colour)][3]) - np.array(plots1[(alpha, colour)][1])], fmt="o-", capsize=5, label=f"alpha={alpha:.1f}", color=colour)
+        plt.plot(plots1[(alpha, colour)][0], plots1[(alpha, colour)][1], label=f"alpha={alpha:.1f}", color=colour)
 
-    ax.set_xlabel("Number of vertices (n)")
-    ax.set_ylabel("Time (s)")
-    ax.legend()
+    plt.xlabel("Number of vertices (n)")
+    plt.ylabel("Time (s)")
+    plt.title('Scaling Experiment - different alphas')
+    plt.legend()
     plt.show()
 
-    fig, ax = plt.subplots()
+    plt.figure(figsize=(10, 6))
     for (beta, colour) in plots2.keys():
-        ax.errorbar(plots2[(beta, colour)][0], plots2[(beta, colour)][1], yerr=[np.array(plots2[(beta, colour)][1]) - np.array(plots2[(beta, colour)][2]), np.array(plots2[(beta, colour)][3]) - np.array(plots2[(beta, colour)][1])], fmt="o-", capsize=5, label=f"beta={beta:.1f}", color=colour)
+        #ax.errorbar(plots1[(alpha, colour)][0], plots1[(alpha, colour)][1], yerr=[np.array(plots1[(alpha, colour)][1]) - np.array(plots1[(alpha, colour)][2]), np.array(plots1[(alpha, colour)][3]) - np.array(plots1[(alpha, colour)][1])], fmt="o-", capsize=5, label=f"alpha={alpha:.1f}", color=colour)
+        plt.plot(plots2[(beta, colour)][0], plots2[(beta, colour)][1], label=f"beta={beta:.1f}", color=colour)
 
-    ax.set_xlabel("Number of vertices (n)")
-    ax.set_ylabel("Time (s)")
-    ax.legend()
+    plt.xlabel("Number of vertices (n)")
+    plt.ylabel("Time (s)")
+    plt.title('Scaling Experiment - different betas')
+    plt.legend()
     plt.show()
 
 plot_scaling()

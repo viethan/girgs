@@ -73,6 +73,7 @@ def plot_clustering_coeff_and_avg_distance_giant_vs_vertices():
     colours = ['red', 'orange', 'maroon', 'tan']
     vertex_counts = [100, 200, 400, 800, 1600, 3200, 6400, 10000]
 
+    idx = 0
     plots1, plots2 = {}, {}
     for i in range(len(alpha_Hs)):
         alpha_H = alpha_Hs[i]
@@ -92,6 +93,8 @@ def plot_clustering_coeff_and_avg_distance_giant_vs_vertices():
                         g1, _ = girg.sample_hrg(n, (2.5 - 1) / 2, C_H, T_H) # cc
                     except ValueError:
                         continue
+                    print(idx)
+                    idx += 1
                     break
 
                 while True:
@@ -99,6 +102,8 @@ def plot_clustering_coeff_and_avg_distance_giant_vs_vertices():
                         g2, _ = girg.sample_hrg(n, alpha_H, C_H, 1/8) # avg dist
                     except ValueError:
                         continue
+                    print(idx)
+                    idx += 1
                     break
 
                 clustering_coefficient = compute_clustering_coefficient(g1)
