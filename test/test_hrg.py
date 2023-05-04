@@ -14,9 +14,17 @@ def plot_median_degree_distribution_with_error_bars(n, alpha_H, C_H, T_H):
     num_graphs = 23
     degree_frequencies = []
 
+    idx = 1
     max_degree = 0
     for _ in range(num_graphs):
-        g, _ = girg.sample_hrg(n, alpha_H, C_H, T_H)
+        while True:
+            try:
+                g, _ = girg.sample_hrg(n, alpha_H, C_H, T_H)
+            except ValueError:
+                continue
+            print(idx)
+            idx += 1
+            break
 
         # Calculate the degree distribution
         deg_freq = gt.vertex_hist(g, "total")[0].tolist()
@@ -42,7 +50,7 @@ def plot_median_degree_distribution_with_error_bars(n, alpha_H, C_H, T_H):
     q3 = q3[non_zero_mask]
 
     fig, ax = plt.subplots()
-    ax.errorbar(degrees, median, yerr=[median - q1, q3 - median], fmt="o", capsize=5, ecolor='black')
+    ax.errorbar(degrees, median, yerr=[median - q1, q3 - median], fmt="o", capsize=5, ecolor='black', color='maroon')
     ax.set_xscale('log')
     ax.set_yscale('log')
     ax.set_xlabel('Degree')
@@ -88,23 +96,9 @@ def plot_clustering_coeff_and_avg_distance_giant_vs_vertices():
             clustering_coefficients = []
             avg_distances_giant = []
             for _ in range(23):
-                while True:
-                    try:
-                        g1, _ = girg.sample_hrg(n, (2.5 - 1) / 2, C_H, T_H) # cc
-                    except ValueError:
-                        continue
-                    print(idx)
-                    idx += 1
-                    break
+                g1, _ = girg.sample_hrg(n, (2.5 - 1) / 2, C_H, T_H) # cc
+                g2, _ = girg.sample_hrg(n, alpha_H, C_H, 1/8) # avg dist
 
-                while True:
-                    try:
-                        g2, _ = girg.sample_hrg(n, alpha_H, C_H, 1/8) # avg dist
-                    except ValueError:
-                        continue
-                    print(idx)
-                    idx += 1
-                    break
 
                 clustering_coefficient = compute_clustering_coefficient(g1)
                 clustering_coefficients.append(clustering_coefficient)
@@ -147,10 +141,10 @@ def plot_clustering_coeff_and_avg_distance_giant_vs_vertices():
     ax.legend()
     plt.show()
 
-n = 1000
+n = 10000
 alpha_H = (2.9 - 1) / 2
 C_H = 1
 T_H = 1/4
 
-#plot_median_degree_distribution_with_error_bars(n, alpha_H, C_H, T_H)
+plot_median_degree_distribution_with_error_bars(n, alpha_H, C_H, T_H)
 plot_clustering_coeff_and_avg_distance_giant_vs_vertices()

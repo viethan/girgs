@@ -20,7 +20,8 @@ cdef long double p_uv_hrg(double x_u, double x_v, double w_u, double w_v, double
     d = np.cosh(r_u) * np.cosh(r_v) - np.sinh(r_u) * np.sinh(r_v) * np.cos(phi_u - phi_v)
     d = np.arccosh(d)
     p_H = 1 / (1 + exp((d - R) / (2 * T_H)))
-
+    p_H = np.clip(p_H, 0, 1)
+    
     return p_H
 
 @cython.boundscheck(False)
@@ -29,7 +30,7 @@ cdef long double dist_torus_points(np.ndarray[np.float64_t, ndim=1] x_u, np.ndar
     maximum = 0.0
 
     for i in range(d):
-        dist = min(abs(x_u[i] - x_v[i]), 1)# - abs(x_u[i] - x_v[i]))
+        dist = min(abs(x_u[i] - x_v[i]), 1 - abs(x_u[i] - x_v[i]))
         maximum = max(maximum, dist)
 
     return maximum
